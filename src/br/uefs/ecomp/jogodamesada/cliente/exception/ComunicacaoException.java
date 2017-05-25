@@ -1,4 +1,4 @@
-package br.uefs.ecomp.jogodamesada.exception;
+package br.uefs.ecomp.jogodamesada.cliente.exception;
 
 /**
  *<strong>Comunicação Exception: </strong>

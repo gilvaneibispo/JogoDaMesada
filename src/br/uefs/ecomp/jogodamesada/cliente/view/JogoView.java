@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.uefs.ecomp.jogodamesada.view;
+package br.uefs.ecomp.jogodamesada.cliente.view;
 
 import java.awt.Component;
 import java.awt.HeadlessException;

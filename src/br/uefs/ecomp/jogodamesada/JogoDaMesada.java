@@ -1,6 +1,6 @@
 package br.uefs.ecomp.jogodamesada;
 
-import br.uefs.ecomp.jogodamesada.view.JogoView;
+import br.uefs.ecomp.jogodamesada.cliente.view.JogoView;
 
 public class JogoDaMesada {
 
