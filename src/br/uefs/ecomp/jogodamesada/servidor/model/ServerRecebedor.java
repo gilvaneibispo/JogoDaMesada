@@ -72,6 +72,8 @@ public class ServerRecebedor implements Runnable {
      * do servidor
      *
      * @return string da mensagem
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
     public Object receberMensagem() throws IOException, ClassNotFoundException {
         return input.readObject().toString();

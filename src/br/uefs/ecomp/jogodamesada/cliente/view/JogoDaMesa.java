@@ -3,18 +3,17 @@ package br.uefs.ecomp.jogodamesada.cliente.view;
 import br.uefs.ecomp.jogodamesada.cliente.model.Casa;
 import br.uefs.ecomp.jogodamesada.cliente.model.Pessoa;
 import br.uefs.ecomp.jogodamesada.cliente.model.Tabuleiro;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Label;
 import java.awt.Toolkit;
 import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,8 +21,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class JogoDaMesa extends javax.swing.JFrame {
-    
-    private static final String baseDir = "scr\\br\\uefs\\ecomp\\jogodamesada\\cliente\\"; 
 
     private JLabel J1 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
     private JLabel J2 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
@@ -42,15 +39,39 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private int posicaoAtual;
     private String[] jogadorLocal;
     private Casa casa;
-    Tabuleiro objTabuleiro;
+    private Tabuleiro objTabuleiro;
+    private String host;
+    private String porta;
 
     public JogoDaMesa() {
         initComponents();
         this.configuracoesAdicionais();
         this.configuraIcon();
-        jogadorLocal = new String[3]; //Código - Nome - Login;
+        jogadorLocal = new String[2]; //Código - Nome/Login;
         objTabuleiro = new Tabuleiro();
         casa = new Casa();
+        host = "127.0.0.1";
+        porta = "12345";
+    }
+
+    public String getHost() {
+        return this.host;
+    }
+
+    public String getPorta() {
+        return this.porta;
+    }
+
+    public void setHost(String h) {
+        this.host = h;
+    }
+
+    public void setPorta(String p) {
+        this.porta = p;
+    }
+    
+    public void setNomeJogadorLocal(String nome ){
+        this.jogadorLocal[1] = nome;
     }
 
     private void configuraIcon() {
@@ -64,7 +85,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
         int dist = dado * 140;
         JLabel jg = new JLabel();
 
-        //this.dado_num.setText(jogador);
         jg = this.getElementoJogador(jogador);
         Movimento move = this.getClasseJogador(jogador);
 
@@ -131,9 +151,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }
 
     private void configuracoesAdicionais() {
-        //scroll_jogadores.add(lista_jogadores);
-        //scroll_msg.add(mensagens);
-
+        
         J1.setBounds(0, 12, 100, 50);
         J2.setBounds(0, 12, 100, 50);
         J3.setBounds(0, 12, 100, 50);
@@ -148,7 +166,24 @@ public class JogoDaMesa extends javax.swing.JFrame {
         tabuleiro.add(J5);
         tabuleiro.add(J6);
 
-        tabuleiro.setBounds(0, 0, 300, 1050);
+        tabuleiro.setBounds(0, 0, 450, 1050);
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setBounds(0, 0, screenSize.width, screenSize.height - 40);
+        
+        ImageIcon cartaDefault = new ImageIcon(getClass().getResource("..\\image\\cartaDefault.png"));
+        cartaDefault.setDescription("Carta um");
+        
+        carta01.setIcon(cartaDefault);
+        carta01.setEnabled(false);
+        
+        carta02.setIcon(cartaDefault);
+        carta02.setEnabled(false);
+        
+        carta03.setIcon(cartaDefault);
+        carta03.setEnabled(false);
+        
+        this.setBackground(new Color(255, 255, 255));
     }
 
     public void atualizarJogadorAtual() {
@@ -191,6 +226,8 @@ public class JogoDaMesa extends javax.swing.JFrame {
         btnConectar = new javax.swing.JButton();
         btnCadastro = new javax.swing.JButton();
         Extra = new javax.swing.JButton();
+        btnEmprestimo = new javax.swing.JButton();
+        hostConfig = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -204,6 +241,8 @@ public class JogoDaMesa extends javax.swing.JFrame {
         setBackground(new java.awt.Color(150, 200, 150));
         setBounds(new java.awt.Rectangle(15, 35, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setLocationByPlatform(true);
+        setResizable(false);
 
         tabuleiro.setBackground(new java.awt.Color(30, 30, 30));
 
@@ -317,7 +356,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
         );
         statusAtualLayout.setVerticalGroup(
             statusAtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 85, Short.MAX_VALUE)
         );
 
         btn_sair.setBackground(new java.awt.Color(153, 0, 153));
@@ -370,30 +409,29 @@ public class JogoDaMesa extends javax.swing.JFrame {
         PainelDadoLayout.setVerticalGroup(
             PainelDadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PainelDadoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(dado_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dado_num)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addComponent(dado_num))
         );
 
         painelCartas.setBackground(new java.awt.Color(250, 130, 0));
 
-        carta02.setText("...");
+        carta02.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         carta02.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 carta02ActionPerformed(evt);
             }
         });
 
-        carta01.setText("...");
+        carta01.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         carta01.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 carta01ActionPerformed(evt);
             }
         });
 
-        carta03.setText("...");
+        carta03.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         carta03.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 carta03ActionPerformed(evt);
@@ -418,10 +456,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
             .addGroup(painelCartasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(painelCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(carta01, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(painelCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(carta02, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(carta03, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)))
+                    .addComponent(carta02, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                    .addComponent(carta03, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(carta01, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -455,6 +492,24 @@ public class JogoDaMesa extends javax.swing.JFrame {
             }
         });
 
+        btnEmprestimo.setBackground(new java.awt.Color(153, 0, 153));
+        btnEmprestimo.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
+        btnEmprestimo.setText("Pedir Empréstimo");
+        btnEmprestimo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmprestimoActionPerformed(evt);
+            }
+        });
+
+        hostConfig.setText("Configurar Host");
+        hostConfig.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        hostConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hostConfigActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -471,7 +526,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btn_jogar, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btn_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(statusAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -479,13 +534,18 @@ public class JogoDaMesa extends javax.swing.JFrame {
                                         .addComponent(PainelDado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addComponent(tabuleiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Extra, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addGap(139, 139, 139))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnEmprestimo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addComponent(btnCadastro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnConectar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Extra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)))
+                .addGap(75, 75, 75))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(hostConfig)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,27 +554,31 @@ public class JogoDaMesa extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tabuleiro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(painelCartas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(statusAtual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PainelDado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btn_jogar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7))
+                    .addComponent(tabuleiro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnConectar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(96, 96, 96)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_sair, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_jogar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(statusAtual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PainelDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(painelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEmprestimo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Extra, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                        .addComponent(Extra, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hostConfig)
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -529,7 +593,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private void btn_jogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_jogarActionPerformed
         int digitado = jogarDado();
         dado_num.setText(digitado + "");
-        this.jogadorLocal[1] = "Gilvanei Pereira Bispo";
         this.atualizarJogadorAtual();
         this.calculaDistancia(jogadorLocal[0], digitado);
         objTabuleiro.getAcaoParaPosicao(posicaoAtual);
@@ -548,17 +611,33 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_carta03ActionPerformed
 
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
-        // TODO add your handling code here:
+        Login login = new Login();
+        login.setClasseMae(this);
     }//GEN-LAST:event_btnConectarActionPerformed
 
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
-        // TODO add your handling code here:
+        Cadastro cad = new Cadastro();
+        cad.setClasseMae(this);
     }//GEN-LAST:event_btnCadastroActionPerformed
 
     private void ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ExtraActionPerformed
 
+    private void btnEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmprestimoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEmprestimoActionPerformed
+
+    private void hostConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostConfigActionPerformed
+        ConfigurarHost hostCon = new ConfigurarHost();
+        hostCon.setClasseMae(this);
+    }//GEN-LAST:event_hostConfigActionPerformed
+
+    public void setLogodo(boolean logou){
+        //Habilitar os botões do jogo...
+        JOptionPane.showMessageDialog(this, "Você está logado");
+    }
+    
     private int jogarDado() {
         Random gerador = new Random();
         int t = 0;
@@ -631,6 +710,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private javax.swing.JPanel PainelDado;
     private javax.swing.JButton btnCadastro;
     private javax.swing.JButton btnConectar;
+    private javax.swing.JButton btnEmprestimo;
     private javax.swing.JButton btn_jogar;
     private javax.swing.JButton btn_sair;
     private javax.swing.JButton carta01;
@@ -646,6 +726,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private javax.swing.JLabel dia_sex;
     private javax.swing.JLabel dia_ter;
     private javax.swing.JLabel fundoTabuleiro;
+    private javax.swing.JButton hostConfig;
     private javax.swing.JLabel icone;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
