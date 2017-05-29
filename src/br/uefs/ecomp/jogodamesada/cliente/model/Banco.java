@@ -29,13 +29,6 @@ public class Banco {
      * @param dados
      * @return Conta
      */
-    public Conta criarConta(String[] dados) {
-        Conta conta = new Conta();
-        Pessoa pessoa = new Pessoa();
-        conta.criarConta(pessoa.listaDePessoas(dados));
-        return conta;
-    }
-
     public Conta criarConta(Pessoa titular) {
         Conta conta = new Conta();
         ArrayList<Pessoa> pessoa = new ArrayList();
@@ -187,7 +180,7 @@ public class Banco {
                     "_______________________________________________________________\n"
                     + atual.getTitulares().get(0).getNome() + " :: " + atual.getSaldo() + " => "
                     + " cr: " + atual.getConta() + " ag:"
-                    + " senha: " + atual.getTitulares().get(0).getSenha());
+                    + " senha: " + atual.getTitulares().get(0).getNome());
         }
     }
 }

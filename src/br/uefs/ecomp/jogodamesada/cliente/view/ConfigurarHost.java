@@ -22,6 +22,7 @@ public class ConfigurarHost extends javax.swing.JFrame {
      */
     public ConfigurarHost() {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -44,9 +45,11 @@ public class ConfigurarHost extends javax.swing.JFrame {
         porta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
-        painelPrincipal.setBackground(new java.awt.Color(0, 153, 153));
+        painelPrincipal.setBackground(new java.awt.Color(36, 46, 60));
 
+        btnCancelar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,12 +57,16 @@ public class ConfigurarHost extends javax.swing.JFrame {
             }
         });
 
+        btnConfirmar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnConfirmar.setText("Confirmar Dados");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarActionPerformed(evt);
             }
         });
+
+        jSeparator1.setBackground(new java.awt.Color(88, 196, 196));
+        jSeparator1.setForeground(new java.awt.Color(88, 196, 196));
 
         endIp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,15 +79,15 @@ public class ConfigurarHost extends javax.swing.JFrame {
             }
         });
 
-        lobelIP.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        lobelIP.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         lobelIP.setForeground(new java.awt.Color(255, 255, 255));
         lobelIP.setText("Endereço IP:");
 
-        labelPorta.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        labelPorta.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         labelPorta.setForeground(new java.awt.Color(255, 255, 255));
         labelPorta.setText("Porta:");
 
-        titulo.setFont(new java.awt.Font("Axure Handwriting", 3, 36)); // NOI18N
+        titulo.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setText("Configurar Host");
 
@@ -99,7 +106,7 @@ public class ConfigurarHost extends javax.swing.JFrame {
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1)
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
-                        .addGap(0, 182, Short.MAX_VALUE)
+                        .addGap(0, 126, Short.MAX_VALUE)
                         .addComponent(btnConfirmar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelar))
@@ -112,17 +119,17 @@ public class ConfigurarHost extends javax.swing.JFrame {
                             .addComponent(endIp)
                             .addComponent(porta))))
                 .addContainerGap())
-            .addGroup(painelPrincipalLayout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
         painelPrincipalLayout.setVerticalGroup(
             painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

@@ -32,6 +32,10 @@ public class Cliente {
 
     public Cliente() {
     }
+    
+    public List<Pessoa> getJogadores(){
+        return p.getJogadores();
+    }
 
     public static void enviarMensagem(Object mensagem) {
         try {

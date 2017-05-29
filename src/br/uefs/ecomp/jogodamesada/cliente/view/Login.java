@@ -26,6 +26,7 @@ public class Login extends JFrame {
      */
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -55,8 +56,10 @@ public class Login extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        painelPrincipal.setBackground(new java.awt.Color(0, 153, 153));
+        painelPrincipal.setBackground(new java.awt.Color(36, 46, 60));
 
+        btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +67,8 @@ public class Login extends JFrame {
             }
         });
 
+        btnEnviar.setBackground(new java.awt.Color(255, 255, 255));
+        btnEnviar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnEnviar.setText("Entrar");
         btnEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,21 +76,24 @@ public class Login extends JFrame {
             }
         });
 
+        jSeparator1.setBackground(new java.awt.Color(88, 196, 196));
+        jSeparator1.setForeground(new java.awt.Color(88, 196, 196));
+
         nome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nomeActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nome de Usuário:");
 
-        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Senha:");
 
-        jLabel3.setFont(new java.awt.Font("Axure Handwriting", 3, 36)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Login");
 
@@ -98,7 +106,7 @@ public class Login extends JFrame {
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1)
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
-                        .addGap(0, 232, Short.MAX_VALUE)
+                        .addGap(0, 200, Short.MAX_VALUE)
                         .addComponent(btnEnviar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelar))
@@ -114,7 +122,7 @@ public class Login extends JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(147, 147, 147))
+                .addGap(166, 166, 166))
         );
         painelPrincipalLayout.setVerticalGroup(
             painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,8 +161,8 @@ public class Login extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        if (JOptionPane.showConfirmDialog(btnCancelar, "Tem certeza que deseja sair?", "Sair do Jogo", 2, 0) == 0) {
-            System.exit(0);
+        if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja sair?", "Sair do Jogo", 2, 0) == 0) {
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 

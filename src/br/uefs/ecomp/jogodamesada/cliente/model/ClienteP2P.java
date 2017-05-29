@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,12 +23,20 @@ public class ClienteP2P {
     private MultiCastRecebedor recebedor;
     private MultiCastEnvio sender;
     private InetAddress address;
-    private List<Player> ordemJogadas;
+    private List<Pessoa> ordemJogadas;
+    private static ClienteP2P instance;
 
     public ClienteP2P(InetAddress address) throws IOException {
         this.address = address;
         this.ordemJogadas = new ArrayList<>();
 
+    }
+    
+    public List<Pessoa> getJogadores(){
+        for(Pessoa p : ordemJogadas){
+            System.out.println(p.getId() + " - " + p.getNome());
+        }
+        return this.ordemJogadas;
     }
 
     public void jogadas(String mensagem) {
@@ -36,8 +45,13 @@ public class ClienteP2P {
         switch (protocolo) {
             case ProtocoloP2P.CONFIGURACOES:
                 while (tokens.hasMoreElements()) {
-                    Player p = new Player(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
-                    ordemJogadas.add(p);
+                    
+                    String nomeJogador = tokens.nextToken();
+                    String id = "J" + tokens.nextToken();
+                    Pessoa pes = new Pessoa(id, nomeJogador);
+
+                    //Player p = new Player(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
+                    ordemJogadas.add(pes);
                 }
                 break;
             case ProtocoloP2P.MOVER_PEAO:

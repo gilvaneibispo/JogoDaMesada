@@ -2,6 +2,7 @@ package br.uefs.ecomp.jogodamesada.cliente.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -20,6 +21,10 @@ public class Tabuleiro {
     
     public void setJogadores(ArrayList jogadores){
         this.jogadores = jogadores;
+    }
+    
+    public ArrayList getJogadores(){
+        return this.jogadores;
     }
 
     /**
@@ -142,19 +147,10 @@ public class Tabuleiro {
         casa.embaralharCartas();
     }
 
-    public ArrayList getJogadores() {
-        ArrayList<Pessoa> temp = new ArrayList();
-        
-        Pessoa p1 = new Pessoa("Gilvanei Pereira Bispo", "senha", "login");
-        Pessoa p2 = new Pessoa("João Pereira Bispo", "senha", "login");
-        Pessoa p3 = new Pessoa("Maria Pereira Bispo", "senha", "login");
-        Pessoa p4 = new Pessoa("Carla Pereira Bispo", "senha", "login");
-        
-        temp.add(p1);
-        temp.add(p2);
-        temp.add(p3);
-        temp.add(p4);
-        
-        return temp;
+    public void setJogadores(List temp) {
+        List<Pessoa> t = temp;
+        for(Pessoa p : t){
+            System.out.println(p.getId() + " - " + p.getNome());
+        }
     }
 }

@@ -21,9 +21,9 @@ import javax.swing.JLabel;
 public class JogoView extends JFrame {
 
     private int xAtual, yAtual;
-    JLabel lEsp = new JLabel(new ImageIcon(getClass().getResource("..\\imagens\\explosao.png")));
-    JLabel lCarroUm = new JLabel(new ImageIcon(getClass().getResource("..\\imagens\\carro1.png")));
-    JLabel lCarroDois = new JLabel(new ImageIcon(getClass().getResource("..\\imagens\\carro2.png")));
+    JLabel lEsp = new JLabel(new ImageIcon(getClass().getResource("..\\image\\explosao.png")));
+    JLabel lCarroUm = new JLabel(new ImageIcon(getClass().getResource("..\\image\\carro1.png")));
+    JLabel lCarroDois = new JLabel(new ImageIcon(getClass().getResource("..\\image\\carro2.png")));
 
     public JogoView() throws HeadlessException {
         this.configuraJanela();
