@@ -12,15 +12,15 @@ public class Conta implements Serializable {
 
     private String conta;                   //Núero da conta.
     private double saldo;                   //saldo da conta.
-    private ArrayList<Pessoa> titulares;    //Lista de titulares.
+    private Pessoa pessoa;
     
     /**
      * <strong>Construtor Conta: </strong>
      * Apenas inicializa alguns atributos, sem receber parâmetros.
      */
-    public Conta(){
-        this.titulares = new ArrayList();
-        this.saldo = 0;
+    public Conta(Pessoa pessoa){
+        this.pessoa = pessoa;
+        this.saldo = 3000.00;
     }
 
     /** @return o saldo */
@@ -43,16 +43,6 @@ public class Conta implements Serializable {
         this.conta = conta;
     }
 
-    
-    /** @return the titulares */
-    public ArrayList<Pessoa> getTitulares() {
-        return titulares;
-    }
-
-    /** @param titulares the titulares to set */
-    public void setTitulares(ArrayList<Pessoa> titulares) {
-        this.titulares = titulares;
-    }
 
     /**
      * <strong>Gera nº de Conta: </strong>
@@ -66,17 +56,5 @@ public class Conta implements Serializable {
         return rt.substring(4, 12);
     }
 
-    /**
-     * <strong>Criar Conta: </strong>
-     * Preenche o valor dos atributos da instância de Conta criada antes da chamada
-     * deste método. Incluindo uma lista do objeto Pessoa, referindo-se aos titulares
-     * desta conta. No final retorna o número da conta que foi criado pelo método
-     * <pre> geraNumeroDeConta() </pre>.
-     * @param titulares
-     * @return 
-     */
-    public String criarConta(ArrayList titulares) {
-        this.setTitulares((ArrayList<Pessoa>) titulares);
-        return this.getConta();
-    }
+ 
 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
+import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesa;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,21 +21,20 @@ import javax.swing.JOptionPane;
  */
 public class ClienteP2P {
 
-    private String nome;
-    private MultiCastRecebedor recebedor;
-    private MultiCastEnvio sender;
     private InetAddress address;
-    private List<Pessoa> ordemJogadas;
+    private LinkedList<Pessoa> ordemJogadas;
     private static ClienteP2P instance;
+    private JogoDaMesa tabuleiro;
+    private Pessoa jogadorAtual;
 
     public ClienteP2P(InetAddress address) throws IOException {
         this.address = address;
-        this.ordemJogadas = new ArrayList<>();
+        this.ordemJogadas = new LinkedList<>();
 
     }
-    
-    public List<Pessoa> getJogadores(){
-        for(Pessoa p : ordemJogadas){
+
+    public List<Pessoa> getJogadores() {
+        for (Pessoa p : ordemJogadas) {
             System.out.println(p.getId() + " - " + p.getNome());
         }
         return this.ordemJogadas;
@@ -45,16 +46,20 @@ public class ClienteP2P {
         switch (protocolo) {
             case ProtocoloP2P.CONFIGURACOES:
                 while (tokens.hasMoreElements()) {
-                    
+
                     String nomeJogador = tokens.nextToken();
                     String id = "J" + tokens.nextToken();
                     Pessoa pes = new Pessoa(id, nomeJogador);
 
                     //Player p = new Player(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
                     ordemJogadas.add(pes);
+                    setJogadorAtual(ordemJogadas.get(0));
                 }
                 break;
             case ProtocoloP2P.MOVER_PEAO:
+                tabuleiro.calculaDistancia(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
+                this.mudarJogadorAtual();
+
                 break;
         }
     }
@@ -72,6 +77,44 @@ public class ClienteP2P {
     public void setAddress(InetAddress address) {
         this.address = address;
     }
-    
-    //pppp
+
+    /**
+     * @return the tabuleiro
+     */
+    public JogoDaMesa getTabuleiro() {
+        return tabuleiro;
+    }
+
+    /**
+     * @param tabuleiro the tabuleiro to set
+     */
+    public void setTabuleiro(JogoDaMesa tabuleiro) {
+        this.tabuleiro = tabuleiro;
+    }
+
+    /**
+     * @return the jogadorAtual
+     */
+    public Pessoa getJogadorAtual() {
+        return jogadorAtual;
+    }
+
+    public boolean eMeuTurno(String nome) {
+        if (nome.equals(this.jogadorAtual.getNome())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param jogadorAtual the jogadorAtual to set
+     */
+    public void mudarJogadorAtual() {
+        ordemJogadas.addLast(ordemJogadas.removeFirst());
+        jogadorAtual = ordemJogadas.peekFirst();        
+    }
+
+    private void setJogadorAtual(Pessoa get) {
+        this.jogadorAtual = get;
+    }
 }

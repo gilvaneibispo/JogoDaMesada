@@ -5,7 +5,6 @@
  */
 package br.uefs.ecomp.jogodamesada.cliente.view;
 
-import br.uefs.ecomp.jogodamesada.JogoDaMesada;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 

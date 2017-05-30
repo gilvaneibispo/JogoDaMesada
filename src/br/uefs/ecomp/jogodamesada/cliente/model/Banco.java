@@ -13,14 +13,14 @@ import java.util.Iterator;
  * @author Gilvanei Bispo
  */
 public class Banco {
-
+/*
     private final ArrayList<Conta> contas;
 
     public Banco() {
         contas = new ArrayList();
     }
 
-    /**
+    
      * <strong>Criar Conta: </strong>
      * Cria nos novas conta, instanciando o objeto, e atribui as posições do
      * vetor que recebe as posições equivalentes em cadas contrutor. Cria também
@@ -28,7 +28,7 @@ public class Banco {
      *
      * @param dados
      * @return Conta
-     */
+   
     public Conta criarConta(Pessoa titular) {
         Conta conta = new Conta();
         ArrayList<Pessoa> pessoa = new ArrayList();
@@ -48,7 +48,7 @@ public class Banco {
      * @param conta
      * @param senha
      * @return String
-     */
+     *
     public String conectar(String conta, String senha) {
 
         String rt = null;
@@ -88,7 +88,7 @@ public class Banco {
      * @param contaDestino
      * @param valor
      * @return String
-     */
+     *
     public synchronized String realizarTransferencia(String contaOrigem, String contaDestino, double valor) {
         String rt = null;                                           //String de retorno
         Iterator<Conta> iterator = contas.iterator();               //Iterador para Conta.        
@@ -119,7 +119,7 @@ public class Banco {
             cd = null;
         }
 
-        /* Se as contas existem realiza-se a transferencia. */
+        Se as contas existem realiza-se a transferencia. 
         if (co != null && cd != null) {
             if (co.getSaldo() < valor) {
                 rt = "020304"; //Sem saldo
@@ -140,7 +140,7 @@ public class Banco {
      * @param conta
      * @param valor
      * @return String
-     */
+     
     public synchronized String realizarDeposito(String conta, double valor) {
         String rt = null;
         boolean achou = false;
@@ -183,4 +183,5 @@ public class Banco {
                     + " senha: " + atual.getTitulares().get(0).getNome());
         }
     }
+    */
 }

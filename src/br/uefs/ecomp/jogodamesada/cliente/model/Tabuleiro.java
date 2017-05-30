@@ -51,6 +51,7 @@ public class Tabuleiro {
         switch (casa) {
             case 1:
                 casaDaPosicao.getCasaPosicao01();
+                
                 break;
             case 2:
                 casaDaPosicao.getCasaPosicao02();

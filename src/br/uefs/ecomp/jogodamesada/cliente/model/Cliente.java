@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloCliente;
+import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
+import br.uefs.ecomp.jogodamesada.servidor.protocolos.ProtocoloServidor;
 
 
 /**
@@ -23,18 +25,27 @@ import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloCliente;
  */
 public class Cliente {
 
+    /**
+     * @return the p
+     */
+    public ClienteP2P getP() {
+        return p;
+    }
+
     private static ObjectInputStream input;
     private static ObjectOutputStream output;
     private static Socket socket;
     private InetAddress multicastIP;
     private static Scanner teclado;
     private ClienteP2P p;
+    private MultiCastRecebedor receiver;
+    private  MultiCastEnvio envio;
 
     public Cliente() {
     }
     
     public List<Pessoa> getJogadores(){
-        return p.getJogadores();
+        return getP().getJogadores();
     }
 
     public static void enviarMensagem(Object mensagem) {
@@ -90,7 +101,7 @@ public class Cliente {
         espera.start();
 
         while (!espera.getState().equals(TERMINATED)){
-            System.out.println("ESPERANDO OUTROS PLAYERS");
+     
             
         }
         
@@ -101,11 +112,18 @@ public class Cliente {
         p = new ClienteP2P(multicastIP);
         System.err.println("aaaaaaaaaaaaaaaaaaaaaaa");
         System.out.println(multicastIP);
-        MultiCastRecebedor receiver = new MultiCastRecebedor(multicastIP, this.p);
-        this.p.setAddress(multicastIP);
+         receiver = new MultiCastRecebedor(multicastIP, this.getP());
+         envio = new  MultiCastEnvio(multicastIP);
+         this.getP().setAddress(multicastIP);
         receiver.start();
         
 
+    }
+
+    public void moverPeao(String id, int dado) throws IOException {
+       StringBuilder data = new StringBuilder();
+       data.append(ProtocoloP2P.MOVER_PEAO).append(ProtocoloP2P.SEPARATOR).append(id).append(ProtocoloServidor.SEPARATOR).append(dado);
+       envio.sendPacket(data.toString());
     }
 
 }

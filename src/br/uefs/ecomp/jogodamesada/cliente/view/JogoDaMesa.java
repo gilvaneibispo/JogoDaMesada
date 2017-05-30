@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.util.*;
@@ -29,6 +30,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private JLabel J5 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
     private JLabel J6 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
 
+    private JLabel imagens[] = new JLabel[5];
+    private Movimento movimentos[] = new Movimento[5];
+    private ImageIcon icons[] = new ImageIcon[5];
     private Movimento M1 = new Movimento(J1);
     private Movimento M2 = new Movimento(J2);
     private Movimento M3 = new Movimento(J3);
@@ -63,6 +67,12 @@ public class JogoDaMesa extends javax.swing.JFrame {
         J4.setBounds(0, 12, 100, 50);
         J5.setBounds(0, 12, 100, 50);
         J6.setBounds(0, 12, 100, 50);
+        //J1.setVisible(false);
+        //J2.setVisible(false);
+        //J3.setVisible(false);
+        //J4.setVisible(false);
+        //J5.setVisible(false);
+        //J6.setVisible(false);
 
         tabuleiro.add(J1);
         tabuleiro.add(J2);
@@ -98,10 +108,13 @@ public class JogoDaMesa extends javax.swing.JFrame {
         this.dia_sab.setHorizontalTextPosition(SwingConstants.CENTER);
 
         this.setBackground(new Color(255, 255, 255));
-        
+
         String[] temp = new String[1];
         temp[0] = "Aguardando jogadores...";
         this.lista_jogadores.setListData(temp);
+
+        this.btnEmprestimo.setEnabled(false);
+        this.btn_jogar.setEnabled(false);
     }
 
     private void configuraIcon() {
@@ -110,8 +123,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
         this.setIconImage(imagemTitulo);
     }
 
-    private void desabilidaFuncoesParaUsusarioNaoLogado() {
-
+    private void controleDeFuncoesDeLogin() {
+        this.btnConectar.setEnabled(false);
+        this.btnCadastro.setEnabled(false);
     }
 
     public void desabilitaJogadoresEmExcesso(int numJogadores) {
@@ -128,10 +142,8 @@ public class JogoDaMesa extends javax.swing.JFrame {
         String[] listData = new String[6];
 
         //int tam = 6 - jogador.size();
-
         //System.out.println("Tamanho array: " + listData.length + " | Tamanho Lista Jogadores: " + jogador.size()
         //        + " | Tamanho de 'tam': " + tam);
-
         for (int j = 0; j < jogador.size(); j++) {
             //System.out.println("Entrou -> " + j);
             listData[j] = this.jogadores.get(j).getId() + " : " + this.jogadores.get(j).getNome();
@@ -170,15 +182,21 @@ public class JogoDaMesa extends javax.swing.JFrame {
         this.jogadores = jogadores;
     }
 
-    public void setLogodo(boolean logou) {
+    public void setLogodo() {
         JOptionPane.showMessageDialog(this, "Você está logado");
         ControllerComunicacao cc = ControllerComunicacao.getInstance();
         List temp = cc.getJogadores();
+        ControllerComunicacao.getInstance().getC().getP().setTabuleiro(this);
         this.setJogadores(temp);
-        this.setJListJogadores(temp);
         this.atualizandoJogadorLocal(temp);
+        this.setJListJogadores(temp);
+        this.controleDeFuncoesDeLogin();
         this.desabilitaJogadoresEmExcesso(temp.size());
         objTabuleiro.setJogadores(temp);
+        HabilitaJogador habilitar = new HabilitaJogador(this);
+        Thread h = new Thread(habilitar);
+        h.start();
+
     }
 
     /**
@@ -820,16 +838,22 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
         if (JOptionPane.showConfirmDialog(btn_sair, "Tem certeza que deseja sair?", "Sair do Jogo", 2, 0) == 0) {
+
             System.exit(0);
         }
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void btn_jogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_jogarActionPerformed
-        int digitado = this.jogarDado();
-        dado_num.setText(digitado + "");
-        JOptionPane.showMessageDialog(this, this.jogadorLocal.getNome() + " : " + this.jogadorLocal.getNome());
-        this.calculaDistancia(this.jogadorLocal.getId(), digitado);
-        objTabuleiro.getAcaoParaPosicao(posicaoAtual);
+        try {
+            int digitado = this.jogarDado();
+            dado_num.setText(digitado + "");
+            JOptionPane.showMessageDialog(this, this.jogadorLocal.getNome() + " : " + this.jogadorLocal.getNome());
+            //this.calculaDistancia(this.jogadorLocal.getId(), digitado);
+            //objTabuleiro.getAcaoParaPosicao(posicaoAtual);
+            ControllerComunicacao.getInstance().moverPeao(this.jogadorLocal.getId(), digitado);
+        } catch (IOException ex) {
+            Logger.getLogger(JogoDaMesa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btn_jogarActionPerformed
 
     private void hostConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostConfigActionPerformed
@@ -1035,6 +1059,31 @@ public class JogoDaMesa extends javax.swing.JFrame {
                 ultimaLinha = 7;
             }
             return linhasInteiras + ultimaLinha;
+        }
+    }
+
+    class HabilitaJogador extends Thread {
+
+        private JogoDaMesa tabuleiro;
+
+        public HabilitaJogador(JogoDaMesa tabuleiro) {
+            this.tabuleiro = tabuleiro;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                System.out.println("While tRUE");
+                if (ControllerComunicacao.getInstance().getC().getP().eMeuTurno(jogadorLocal.getNome())) {
+                    System.out.println("br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesa.HabilitaJogador.run()");
+                    this.tabuleiro.btn_jogar.setEnabled(true);
+                    this.tabuleiro.btnEmprestimo.setEnabled(true);
+                } else {
+                    this.tabuleiro.btn_jogar.setEnabled(false);
+                    this.tabuleiro.btnEmprestimo.setEnabled(false);
+                }
+            }
+
         }
     }
 }

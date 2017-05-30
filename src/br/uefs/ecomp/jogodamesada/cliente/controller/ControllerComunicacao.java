@@ -16,6 +16,13 @@ import java.util.List;
  */
 public class ControllerComunicacao {
 
+    /**
+     * @return the c
+     */
+    public Cliente getC() {
+        return c;
+    }
+
     private Cliente c;
     private static ControllerComunicacao controller;
 
@@ -30,7 +37,7 @@ public class ControllerComunicacao {
     }
     
     public List<Pessoa> getJogadores(){
-        return c.getJogadores();
+        return getC().getJogadores();
     }
 
     /**
@@ -58,19 +65,23 @@ public class ControllerComunicacao {
      * uma conexão com o servidor
      */
     public void acessoServidor(String ip, String porta) throws IOException {
-        c.acessarServidor(ip, porta);
+        getC().acessarServidor(ip, porta);
     }
 
     public int cadastrarUsuario(String nome, String senha) {
-        return c.cadastrarUsuario(nome, senha);
+        return getC().cadastrarUsuario(nome, senha);
     }
 
     public int logar(String nome, String senha) throws IOException {
-        return c.logar(nome, senha);
+        return getC().logar(nome, senha);
     }
 
     public boolean conectarSala(String players, String periodo) throws IOException {
-        return c.conectarSala(players, periodo);
+        return getC().conectarSala(players, periodo);
+    }
+
+    public void moverPeao(String id, int dado) throws IOException {
+        getC().moverPeao(id, dado);
     }
 
 }

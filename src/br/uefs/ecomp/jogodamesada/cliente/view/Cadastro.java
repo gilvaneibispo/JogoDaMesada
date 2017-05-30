@@ -181,8 +181,11 @@ public class Cadastro extends javax.swing.JFrame {
                 try {
                     int respostaLogin = c.logar(nome.getText(), Arrays.toString(senha.getPassword()));
                     if (respostaLogin == 3) {
-                        classeMae.setLogodo(true);
-                        this.dispose();
+                    classeMae.setNomeJogadorLocal(nome.getText());                    
+                    this.dispose();
+                    ConfigurandoSala novaSala = new ConfigurandoSala();
+                    novaSala.setClasseMae(classeMae);
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Descupa: Houve algum erro na inicialização!");
                     }
