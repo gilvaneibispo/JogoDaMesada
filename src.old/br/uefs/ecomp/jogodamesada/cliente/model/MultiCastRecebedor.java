@@ -36,6 +36,7 @@ public class MultiCastRecebedor extends Thread {
 
         while (true) {
             try {
+                System.err.println("Esperando receber");
                 this.socket.receive(packet);
                 message = new String(inBuffer, 0, packet.getLength());
                 System.out.println(message);

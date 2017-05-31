@@ -84,11 +84,4 @@ public class ControllerComunicacao {
         getC().moverPeao(id, dado);
     }
 
-    public void perdeuSuaVez() throws IOException {
-        c.perdeuSuaVez();
-    }
-    public void felizAniversario(int id) throws IOException{
-        c.felizAniversario(id);
-    }
-
 }

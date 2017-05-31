@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloCliente;
-import br.uefs.ecomp.jogodamesada.servidor.protocolos.ProtocoloServidor;
-
+import jogodamesada.Servidor.Protocolos.ProtocoloServidor;
 
 /**
  *
@@ -103,13 +102,7 @@ public class ServerRecebedor implements Runnable {
                         break;
                 }
             } catch (IOException ex) {
-                try {
-                    input.close();
-                    output.close();
-                    clientSocket.close();
-                } catch (IOException ex1) {
-                    Logger.getLogger(ServerRecebedor.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+                Logger.getLogger(ServerRecebedor.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServerRecebedor.class.getName()).log(Level.SEVERE, null, ex);
             }

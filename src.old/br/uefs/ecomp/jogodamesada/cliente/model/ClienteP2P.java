@@ -7,11 +7,13 @@ package br.uefs.ecomp.jogodamesada.cliente.model;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
 import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesa;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,13 +59,7 @@ public class ClienteP2P {
             case ProtocoloP2P.MOVER_PEAO:
                 tabuleiro.calculaDistancia(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
                 this.mudarJogadorAtual();
-                break;
-            case ProtocoloP2P.PERDEU_A_VEZ:
-                System.out.println("VC PERDEU SUA VEZ");
-                this.mudarJogadorAtual();
-                break;
-            case ProtocoloP2P.FELIZ_ANIVERSARIO:
-                this.felizAniversario(Integer.parseInt(tokens.nextToken()));
+
                 break;
         }
     }
@@ -115,26 +111,10 @@ public class ClienteP2P {
      */
     public void mudarJogadorAtual() {
         ordemJogadas.addLast(ordemJogadas.removeFirst());
-        jogadorAtual = ordemJogadas.peekFirst();
+        jogadorAtual = ordemJogadas.peekFirst();        
     }
 
     private void setJogadorAtual(Pessoa get) {
         this.jogadorAtual = get;
-    }
-
-    private void felizAniversario(int id) {
-        for (Pessoa p : ordemJogadas){
-            if (p.getId().equals(id)){
-                p.getConta().creditar(ordemJogadas.size()*100.00);
-            }
-            else{
-                if (p.getConta().getSaldo() < 100){
-                    if(this.tabuleiro.emprestimo(100.00)){
-                        p.getConta().debitar(100.00);
-                    }
-                }
-                p.getConta().debitar(100.00);
-            }
-        }
     }
 }

@@ -56,13 +56,5 @@ public class Conta implements Serializable {
         return rt.substring(4, 12);
     }
 
-    void creditar(double d) {
-        this.saldo = saldo + d;
-    }
-
-    void debitar(double d) {
-        this.saldo = saldo - d;
-    }
-
  
 }

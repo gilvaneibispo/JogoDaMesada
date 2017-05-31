@@ -9,10 +9,9 @@ package br.uefs.ecomp.jogodamesada.cliente.conexao;
  *
  * @author User
  */
-public class ProtocoloP2P {
-    public static final int CONFIGURACOES = 1;
-    public static final int MOVER_PEAO = 2;
-    public static final int PERDEU_A_VEZ = 3;
-    public static final int FELIZ_ANIVERSARIO= 4;
+public class ProtocoloCliente {
+    public static final int LOGIN = 1;
+    public static final int CADASTRAR_USUARIO = 2;
+    public static final int CONECTAR_SALA = 4;
     public static final String SEPARATOR = "-";
 }

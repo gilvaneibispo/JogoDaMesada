@@ -6,10 +6,8 @@
 package br.uefs.ecomp.jogodamesada.servidor.Model;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  *
@@ -28,9 +26,6 @@ public class Servidor {
 
     public void iniciar() {
         System.out.println("Esperando conexões...");
-        long tempInicial = System.currentTimeMillis();
-        System.out.println(tempInicial);
-        System.out.println("inicio da compilação.. "+new Date().getTime());
         while (true) {
             try {
                 Socket clientSock = server.accept();

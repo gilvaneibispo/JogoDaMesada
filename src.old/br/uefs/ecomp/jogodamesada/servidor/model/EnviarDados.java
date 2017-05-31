@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
-import br.uefs.ecomp.jogodamesada.servidor.protocolos.ProtocoloServidor;
-
+import jogodamesada.Servidor.Protocolos.ProtocoloServidor;
 
 /**
  *

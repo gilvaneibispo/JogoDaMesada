@@ -12,7 +12,5 @@ package br.uefs.ecomp.jogodamesada.cliente.conexao;
 public class ProtocoloP2P {
     public static final int CONFIGURACOES = 1;
     public static final int MOVER_PEAO = 2;
-    public static final int PERDEU_A_VEZ = 3;
-    public static final int FELIZ_ANIVERSARIO= 4;
     public static final String SEPARATOR = "-";
 }

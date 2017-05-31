@@ -67,6 +67,12 @@ public class JogoDaMesa extends javax.swing.JFrame {
         J4.setBounds(0, 12, 100, 50);
         J5.setBounds(0, 12, 100, 50);
         J6.setBounds(0, 12, 100, 50);
+        //J1.setVisible(false);
+        //J2.setVisible(false);
+        //J3.setVisible(false);
+        //J4.setVisible(false);
+        //J5.setVisible(false);
+        //J6.setVisible(false);
 
         tabuleiro.add(J1);
         tabuleiro.add(J2);
@@ -91,6 +97,15 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
         carta03.setIcon(cartaDefault);
         carta03.setEnabled(false);
+
+        this.dia_ter.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dado_num.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_dom.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_seg.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_qua.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_qui.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_sex.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.dia_sab.setHorizontalTextPosition(SwingConstants.CENTER);
 
         this.setBackground(new Color(255, 255, 255));
 
@@ -122,15 +137,28 @@ public class JogoDaMesa extends javax.swing.JFrame {
         }
     }
 
-    public void setJListJogadores(List<Pessoa> jogador) {
+    public void setJListJogadores(List jogador) {
+        //this.jogadores;
         String[] listData = new String[6];
 
+        //int tam = 6 - jogador.size();
+        //System.out.println("Tamanho array: " + listData.length + " | Tamanho Lista Jogadores: " + jogador.size()
+        //        + " | Tamanho de 'tam': " + tam);
         for (int j = 0; j < jogador.size(); j++) {
-            listData[j] = jogador.get(j).getId() + " : " + jogador.get(j).getNome() 
-            + "[mês: " + jogador.get(j).getMes() + "]";
+            //System.out.println("Entrou -> " + j);
+            listData[j] = this.jogadores.get(j).getId() + " : " + this.jogadores.get(j).getNome();
         }
 
         this.lista_jogadores.setListData(listData);
+    }
+
+    public void usandoLista() {
+        ControllerComunicacao cm = ControllerComunicacao.getInstance();
+        List<Pessoa> temp = cm.getJogadores();
+
+        for (Pessoa p : temp) {
+            System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome());
+        }
     }
 
     /**
@@ -154,20 +182,21 @@ public class JogoDaMesa extends javax.swing.JFrame {
         this.jogadores = jogadores;
     }
 
-    public void setLogodo(int participantes) {
+    public void setLogodo() {
         JOptionPane.showMessageDialog(this, "Você está logado");
         ControllerComunicacao cc = ControllerComunicacao.getInstance();
         List temp = cc.getJogadores();
         ControllerComunicacao.getInstance().getC().getP().setTabuleiro(this);
         this.setJogadores(temp);
+        this.atualizandoJogadorLocal(temp);
         this.setJListJogadores(temp);
         this.controleDeFuncoesDeLogin();
-        this.atualizandoJogadorLocal(temp);
         this.desabilitaJogadoresEmExcesso(temp.size());
         objTabuleiro.setJogadores(temp);
         HabilitaJogador habilitar = new HabilitaJogador(this);
         Thread h = new Thread(habilitar);
         h.start();
+
     }
 
     /**
@@ -231,11 +260,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
                 break;
         }
         return rt;
-    }
-    
-    public int getPosicaoPeaoAtual(String id_jogador){
-        Movimento mtemp = getClasseJogador(id_jogador);
-        return mtemp.calculaPosicao();
     }
 
     /**
@@ -788,7 +812,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConectarActionPerformed
 
     private void ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActionPerformed
-
+        this.usandoLista();
     }//GEN-LAST:event_ExtraActionPerformed
 
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
@@ -809,7 +833,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_carta02ActionPerformed
 
     private void btnEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmprestimoActionPerformed
-       
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnEmprestimoActionPerformed
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
@@ -848,11 +872,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new JogoDaMesa().setVisible(true);
         });
-    }
-    public boolean emprestimo(double valor){
-        JOptionPane.showInputDialog("Voce Precisa De Um Emprestimo");
-        this.btnEmprestimo.setEnabled(true);
-        return this.btnEmprestimo.isShowing();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1054,7 +1073,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
         @Override
         public void run() {
             while (true) {
+                System.out.println("While tRUE");
                 if (ControllerComunicacao.getInstance().getC().getP().eMeuTurno(jogadorLocal.getNome())) {
+                    System.out.println("br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesa.HabilitaJogador.run()");
                     this.tabuleiro.btn_jogar.setEnabled(true);
                     this.tabuleiro.btnEmprestimo.setEnabled(true);
                 } else {
@@ -1063,41 +1084,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
                 }
             }
 
-        }
-    }
-
-    class JogadorAway extends Thread {
-
-        private JogoDaMesa tabuleiro;
-
-        public JogadorAway(JogoDaMesa tabuleiro) {
-            this.tabuleiro = tabuleiro;
-        }
-
-        @Override
-        public void run() {
-            long tempInicial = 0;  //Tempo inicial
-            while (true) {
-                if (this.tabuleiro.btn_jogar.isEnabled() || this.tabuleiro.btnEmprestimo.isEnabled()) { 
-                    //Se um dos botoes estiver enable, ou seja passiveis de serem clicados oq acontece apenas na vez do player
-                    if (tempInicial == 0) {
-                        tempInicial = System.currentTimeMillis();  //O tempo inicial assume o valor do relogio 
-                    }
-                    if ((tempInicial + 30000) > System.currentTimeMillis()) {
-                        try {
-                            //Se o valor inicial + 30 segundos for maior que o valor atual do relogio do sistema
-                            ControllerComunicacao.getInstance().perdeuSuaVez();
-                            //O player perde a sua vez
-                            tempInicial = 0;
-                        } catch (IOException ex) {
-                            Logger.getLogger(JogoDaMesa.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                } else {
-                    tempInicial = 0;   //Se os botoes não forem passiveis de receber um click o relogio assume o valor 0
-                }
-            }
         }
     }
 }

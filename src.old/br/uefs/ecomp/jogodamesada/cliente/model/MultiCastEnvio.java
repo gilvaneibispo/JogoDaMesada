@@ -29,7 +29,7 @@ public class MultiCastEnvio {
         byte[] buffer = data.getBytes();
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, this.address, MultiCastEnvio.PORT);
         
-        socket.send(packet                                  );
+        socket.send(packet);
     }
     
 }
