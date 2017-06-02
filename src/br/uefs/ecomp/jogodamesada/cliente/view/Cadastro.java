@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class Cadastro extends javax.swing.JFrame {
 
-    private JogoDaMesa classeMae;
+    private JogoDaMesada classeMae;
 
     /**
      * Creates new form Cadastro
@@ -29,7 +29,7 @@ public class Cadastro extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
-    public void setClasseMae(JogoDaMesa classeMae) {
+    public void setClasseMae(JogoDaMesada classeMae) {
         this.classeMae = classeMae;
     }
 

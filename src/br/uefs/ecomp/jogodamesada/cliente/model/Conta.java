@@ -1,8 +1,7 @@
 package br.uefs.ecomp.jogodamesada.cliente.model;
 
-import com.sun.jmx.snmp.Timestamp;
 import java.io.Serializable;
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  * Ob
@@ -12,57 +11,106 @@ public class Conta implements Serializable {
 
     private String conta;                   //Núero da conta.
     private double saldo;                   //saldo da conta.
-    private Pessoa pessoa;
-    
+    private final Pessoa pessoa;            //Títular da conta.
+    private double divida;                  //Dividas do titular.
+
     /**
      * <strong>Construtor Conta: </strong>
      * Apenas inicializa alguns atributos, sem receber parâmetros.
+     * @param pessoa
      */
-    public Conta(Pessoa pessoa){
+    public Conta(Pessoa pessoa) {
         this.pessoa = pessoa;
         this.saldo = 3000.00;
     }
 
-    /** @return o saldo */
+    /**
+     * @return o saldo
+     */
     public double getSaldo() {
         return saldo;
     }
 
-    /** @param saldo o saldo para set */
+    /**
+     * @param saldo o saldo para set
+     */
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    /** @return a conta */
+    /**
+     * @return a conta
+     */
     public String getConta() {
         return conta;
     }
 
-    /** @param conta a conta para set */
+    /**
+     * @param conta a conta para set
+     */
     public void setConta(String conta) {
         this.conta = conta;
     }
-
+    
+    /**
+     * @return a divida
+     */
+    public double getDivida() {
+        return divida;
+    }
 
     /**
-     * <strong>Gera nº de Conta: </strong>
-     * Gera o numero para casa instância de conta, usando como base os 8 últimos
-     * dígitos da função nativa Timestamp.
+     * @param valor
+     */
+    public void setDivida(double valor) {
+        this.divida = this.divida + valor;
+    }
+
+    /**
+     * <strong>Realizar Transferência: </strong>
+     * Também baseado na iteração da lista de contas no Servidor, busca duas
+     * contas uma de origem do valor e outra destino. Simplesmente diminui o
+     * valor do saldo da primeira e soma no saldo da segunda.
+     *
+     * @param contaOrigem
+     * @param contaDestino
+     * @param valor
      * @return String
      */
-    public String geraNumeroDeConta() {
-        Timestamp t = new Timestamp();
-        String rt = "" + t.getDateTime();
-        return rt.substring(4, 12);
+    public synchronized boolean realizarTransferencia(Conta contaOrigem, Conta contaDestino, double valor) {
+
+        if (contaOrigem.getSaldo() < valor) {
+            int op = JOptionPane.showConfirmDialog(null, "Você não tem saldo suficiente!\n"
+                    + "Deseja fazer um empréstimo?");
+            if (op == 1) {
+                this.emprestimo();
+            }
+            return false;
+        } else {
+            contaOrigem.setSaldo(contaOrigem.getSaldo() - valor);
+            contaDestino.setSaldo(contaDestino.getSaldo() + valor);
+            return true;
+        }
+    }
+    
+    //Generico...
+    public void creditar(Conta conta, double valor){
+        conta.setSaldo(conta.getSaldo() + valor);
+    }
+    //Se conhecemos o obj conta...
+    public void creditar(double valor){
+        this.setSaldo(this.getSaldo() + valor);
+    }
+    
+    //Generico...
+    public void debitar(Conta conta, double valor){
+        conta.setSaldo(conta.getSaldo() - valor);
+    }
+    //Se conhecemos o obj conta...
+    public void debitar(double valor){
+        this.setSaldo(this.getSaldo() - valor);
     }
 
-    void creditar(double d) {
-        this.saldo = saldo + d;
+    public void emprestimo() {
     }
-
-    void debitar(double d) {
-        this.saldo = saldo - d;
-    }
-
- 
 }

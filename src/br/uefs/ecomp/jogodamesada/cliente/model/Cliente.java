@@ -23,28 +23,28 @@ import br.uefs.ecomp.jogodamesada.servidor.protocolos.ProtocoloServidor;
  * @author User
  */
 public class Cliente {
-
-    /**
-     * @return the p
-     */
-    public ClienteP2P getP() {
-        return p;
-    }
-
+    
     private static ObjectInputStream input;
     private static ObjectOutputStream output;
     private static Socket socket;
     private InetAddress multicastIP;
     private static Scanner teclado;
-    private ClienteP2P p;
+    private ClienteP2P clienteP2P;
     private MultiCastRecebedor receiver;
     private MultiCastEnvio envio;
+
+    /**
+     * @return the clienteP2P
+     */
+    public ClienteP2P getClienteP2P() {
+        return clienteP2P;
+    }    
 
     public Cliente() {
     }
 
     public List<Pessoa> getJogadores() {
-        return getP().getJogadores();
+        return getClienteP2P().getJogadores();
     }
 
     public static void enviarMensagem(Object mensagem) {
@@ -53,7 +53,6 @@ public class Cliente {
         } catch (IOException ex) {
             System.out.println("Erro na comunicação");
         }
-
     }
 
     /**
@@ -101,18 +100,17 @@ public class Cliente {
         while (!espera.getState().equals(TERMINATED)) {
 
         }
-
+            
         return true;
     }
 
     public void iniciarMultCast(InetAddress multicastIP) throws IOException {
-        p = new ClienteP2P(multicastIP);
+        clienteP2P = new ClienteP2P(multicastIP);
         System.out.println(multicastIP);
-        receiver = new MultiCastRecebedor(multicastIP, this.getP());
+        receiver = new MultiCastRecebedor(multicastIP, this.getClienteP2P());
         envio = new MultiCastEnvio(multicastIP);
-        this.getP().setAddress(multicastIP);
+        this.getClienteP2P().setAddress(multicastIP);
         receiver.start();
-
     }
 
     public void moverPeao(String id, int dado) throws IOException {

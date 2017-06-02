@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class Login extends JFrame {
 
-    private JogoDaMesa classeMae;
+    private JogoDaMesada classeMae;
 
     /**
      * Creates new form Login
@@ -30,7 +30,7 @@ public class Login extends JFrame {
         this.setVisible(true);
     }
 
-    public void setClasseMae(JogoDaMesa classeMae) {
+    public void setClasseMae(JogoDaMesada classeMae) {
         this.classeMae = classeMae;
     }
 

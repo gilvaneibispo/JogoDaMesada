@@ -18,17 +18,18 @@ import javax.swing.JOptionPane;
  */
 public class ConfigurandoSala extends JFrame {
 
-    private JogoDaMesa classeMae;
+    private JogoDaMesada classeMae;
 
     /**
      * Creates new form ConfigurandoSala
      */
     public ConfigurandoSala() {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    public void setClasseMae(JogoDaMesa classeMae) {
+    public void setClasseMae(JogoDaMesada classeMae) {
         this.classeMae = classeMae;
     }
 
@@ -52,9 +53,11 @@ public class ConfigurandoSala extends JFrame {
         jogadores = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
-        painelPrincipal.setBackground(new java.awt.Color(0, 153, 153));
+        painelPrincipal.setBackground(new java.awt.Color(36, 46, 60));
 
+        btnCancelar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +65,7 @@ public class ConfigurandoSala extends JFrame {
             }
         });
 
+        btnConfirmar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btnConfirmar.setText("Confirmar Dados");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,20 +73,22 @@ public class ConfigurandoSala extends JFrame {
             }
         });
 
-        lobelIP.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        lobelIP.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         lobelIP.setForeground(new java.awt.Color(255, 255, 255));
         lobelIP.setText("Número de Jogadores:");
 
-        labelPorta.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        labelPorta.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         labelPorta.setForeground(new java.awt.Color(255, 255, 255));
         labelPorta.setText("Duração da Partida:");
 
-        titulo.setFont(new java.awt.Font("Axure Handwriting", 3, 36)); // NOI18N
+        titulo.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setText("Que sala você quer?");
 
+        duracao.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         duracao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolha", "01 mês", "02 meses", "03 meses" }));
 
+        jogadores.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jogadores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolha...", "02 Jogadores", "03 Jogadores", "04 Jogadores", "05 Jogadores", "06 Jogadores" }));
 
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
@@ -102,16 +108,15 @@ public class ConfigurandoSala extends JFrame {
                             .addComponent(jogadores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(duracao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
-                        .addGap(0, 11, Short.MAX_VALUE)
-                        .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
-                                .addComponent(btnConfirmar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
-                                .addComponent(titulo)
-                                .addGap(16, 16, 16)))))
+                        .addGap(0, 126, Short.MAX_VALUE)
+                        .addComponent(btnConfirmar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPrincipalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titulo)
+                .addGap(71, 71, 71))
         );
         painelPrincipalLayout.setVerticalGroup(
             painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,11 +167,12 @@ public class ConfigurandoSala extends JFrame {
             if (jogadores.getSelectedIndex() == 0 || duracao.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Por favor: Selecione todos os campos corretamente!");
             } else {
+                this.classeMae.setStatusLabel("Aguardando novos jogadores...");
                 JOptionPane.showMessageDialog(this, "Aguarde enquanto completamos a sala!");
-                this.dispose();
+                this.dispose();                
                 if (c.conectarSala("" + (jogadores.getSelectedIndex() + 1), "" + duracao.getSelectedIndex())) {
                     JOptionPane.showMessageDialog(this, "Sala encontrata!");
-                    this.classeMae.setLogodo(jogadores.getSelectedIndex());
+                    this.classeMae.setLogodo(1);
                 }
             }
         } catch (IOException ex) {

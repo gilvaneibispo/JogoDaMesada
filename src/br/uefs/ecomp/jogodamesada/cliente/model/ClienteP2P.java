@@ -10,8 +10,9 @@ import java.net.InetAddress;
 import java.util.List;
 import java.util.StringTokenizer;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloP2P;
-import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesa;
+import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesada;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +23,7 @@ public class ClienteP2P {
     private InetAddress address;
     private LinkedList<Pessoa> ordemJogadas;
     private static ClienteP2P instance;
-    private JogoDaMesa tabuleiro;
+    private JogoDaMesada tabuleiro;
     private Pessoa jogadorAtual;
 
     public ClienteP2P(InetAddress address) throws IOException {
@@ -43,28 +44,29 @@ public class ClienteP2P {
         int protocolo = Integer.parseInt(tokens.nextToken());
         switch (protocolo) {
             case ProtocoloP2P.CONFIGURACOES:
-                while (tokens.hasMoreElements()) {
-
-                    String nomeJogador = tokens.nextToken();
-                    String id = "J" + tokens.nextToken();
-                    Pessoa pes = new Pessoa(id, nomeJogador);
-
-                    //Player p = new Player(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
-                    ordemJogadas.add(pes);
-                    setJogadorAtual(ordemJogadas.get(0));
-                }
+                this.criaInstanciaPessoa(tokens);
                 break;
             case ProtocoloP2P.MOVER_PEAO:
                 tabuleiro.calculaDistancia(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
                 this.mudarJogadorAtual();
                 break;
             case ProtocoloP2P.PERDEU_A_VEZ:
-                System.out.println("VC PERDEU SUA VEZ");
+                JOptionPane.showMessageDialog(tabuleiro, "Desculpa: Você perdeu a vez de jogar!");
                 this.mudarJogadorAtual();
                 break;
             case ProtocoloP2P.FELIZ_ANIVERSARIO:
                 this.felizAniversario(Integer.parseInt(tokens.nextToken()));
                 break;
+        }
+    }
+
+    private void criaInstanciaPessoa(StringTokenizer tokens) {
+        while (tokens.hasMoreElements()) {
+            String nomeJogador = tokens.nextToken();
+            String id = "J" + tokens.nextToken();
+            Pessoa pes = new Pessoa(id, nomeJogador);
+            ordemJogadas.add(pes);
+            setJogadorAtual(ordemJogadas.get(0));
         }
     }
 
@@ -85,14 +87,14 @@ public class ClienteP2P {
     /**
      * @return the tabuleiro
      */
-    public JogoDaMesa getTabuleiro() {
+    public JogoDaMesada getTabuleiro() {
         return tabuleiro;
     }
 
     /**
      * @param tabuleiro the tabuleiro to set
      */
-    public void setTabuleiro(JogoDaMesa tabuleiro) {
+    public void setTabuleiro(JogoDaMesada tabuleiro) {
         this.tabuleiro = tabuleiro;
     }
 
@@ -123,13 +125,12 @@ public class ClienteP2P {
     }
 
     private void felizAniversario(int id) {
-        for (Pessoa p : ordemJogadas){
-            if (p.getId().equals(id)){
-                p.getConta().creditar(ordemJogadas.size()*100.00);
-            }
-            else{
-                if (p.getConta().getSaldo() < 100){
-                    if(this.tabuleiro.emprestimo(100.00)){
+        for (Pessoa p : ordemJogadas) {
+            if (p.getId().equals(id)) {
+                p.getConta().creditar(ordemJogadas.size() * 100.00);
+            } else {
+                if (p.getConta().getSaldo() < 100) {
+                    if (this.tabuleiro.emprestimo(100.00)) {
                         p.getConta().debitar(100.00);
                     }
                 }

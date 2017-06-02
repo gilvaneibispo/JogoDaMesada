@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class ConfigurarHost extends javax.swing.JFrame {
 
-    private JogoDaMesa clsseMae;
+    private JogoDaMesada clsseMae;
 
     /**
      * Creates new form ConfigurarHost
@@ -25,7 +25,7 @@ public class ConfigurarHost extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
-    public void setClasseMae(JogoDaMesa tab) {
+    public void setClasseMae(JogoDaMesada tab) {
         this.clsseMae = tab;
     }
 

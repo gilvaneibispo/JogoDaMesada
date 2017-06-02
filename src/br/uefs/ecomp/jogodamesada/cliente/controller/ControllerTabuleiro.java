@@ -1,30 +1,49 @@
-package br.uefs.ecomp.jogodamesada.cliente.model;
+package br.uefs.ecomp.jogodamesada.cliente.controller;
 
+import br.uefs.ecomp.jogodamesada.cliente.model.Carta;
+import br.uefs.ecomp.jogodamesada.cliente.model.CartaXML;
+import br.uefs.ecomp.jogodamesada.cliente.model.Casa;
+import br.uefs.ecomp.jogodamesada.cliente.model.ClienteP2P;
+import br.uefs.ecomp.jogodamesada.cliente.model.Pessoa;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  *
  * @author Gilvanei
  */
-public class Tabuleiro {    
-   
-    private ArrayList<Pessoa> jogadores;
-    private Carta CeE; //Compra e entretenimento.
+public class ControllerTabuleiro {
 
-    public Tabuleiro() {
+    private ArrayList<Pessoa> jogadores;    //Todos os jogadores da sala.
+    private Carta CeE;                      //Compra e entretenimento.
+    private Pessoa jogadorLocal;            //Jogador local da aplicação.
+    private ClienteP2P clienteP2P;          //Referência para o objeto ClienteP2P
+    private Casa casaDaPosicao;             //Referencia ao objeto Casa para recuperar 
+                                            //as ações nas posições do tabuleiro.
+    
+    public ControllerTabuleiro() {
         CeE = null;
+        this.jogadorLocal = new Pessoa();
+        this.casaDaPosicao = new Casa();
         this.recuperarCartas();
         this.embaralharCartas();
     }
     
-    public void setJogadores(ArrayList jogadores){
+    public void setJogadorLocal(Pessoa p){
+        this.jogadorLocal = p;
+        this.casaDaPosicao.setPessoaConta(p);
+    }
+
+    public void setJogadores(ArrayList jogadores) {
         this.jogadores = jogadores;
     }
-    
-    public ArrayList getJogadores(){
+
+    public ArrayList getJogadores() {
         return this.jogadores;
+    }
+    
+    public void setClienteP2P(ClienteP2P clienteP2P){
+        this.clienteP2P = clienteP2P;
     }
 
     /**
@@ -34,33 +53,26 @@ public class Tabuleiro {
      * funcionamento do jogo.
      */
     private void recuperarCartas() {
-        
+
         ArrayList<Carta> cartas = new ArrayList();
 
         CartaXML cart = new CartaXML();
-        //this.cartas = (LinkedList) cart.LendoXML();
-        cartas = (ArrayList) cart.LendoXML();
-
-        for (Iterator it = cartas.iterator(); it.hasNext();) {
-            Carta cartaAtual = (Carta) it.next();
-        }
+        cartas = (ArrayList) cart.LendoXML();        
     }
 
- public void getAcaoParaPosicao(int casa) {/*
-        Casa casaDaPosicao = null;
+    public void getAcaoParaPosicao(int casa) {        
         switch (casa) {
             case 1:
-                casaDaPosicao.getCasaPosicao01();
-                
+                casaDaPosicao.getCasaPremio(this.jogadorLocal);
                 break;
             case 2:
-                casaDaPosicao.getCasaPosicao02();
+                casaDaPosicao.getCasaComprasENatureza();
                 break;
             case 3:
                 casaDaPosicao.getAcaoCasaCorreio(3);
                 break;
             case 4:
-                casaDaPosicao.getCasaPosicao03();
+                casaDaPosicao.getCasaSorteGrande();
                 break;
             case 5:
                 casaDaPosicao.getCasaPosicao05();
@@ -74,7 +86,7 @@ public class Tabuleiro {
             case 8:
                 casaDaPosicao.getCasaPosicao08();
                 break;
-            case 9:
+            case 90:
                 casaDaPosicao.getCasaPosicao09();
                 break;
             case 10:
@@ -83,17 +95,14 @@ public class Tabuleiro {
             case 11:
                 casaDaPosicao.getCasaPosicao11();
                 break;
-            case 12:
-                casaDaPosicao.getAcaoCasaCorreio(2);
+            case 15:
+                //casaDaPosicao.getAcaoCasaCorreio(2);
                 break;
             case 13:
                 casaDaPosicao.getCasaPosicao13();
                 break;
             case 14:
                 casaDaPosicao.getCasaPosicao14();
-                break;
-            case 15:
-                casaDaPosicao.getAcaoCasaCorreio(2);
                 break;
             case 16:
                 casaDaPosicao.getCasaPosicao15();
@@ -111,7 +120,7 @@ public class Tabuleiro {
                 casaDaPosicao.getCasaPosicao20();
                 break;
             case 21:
-    casaDaPosicao.getCasaPosicao21();
+                casaDaPosicao.getCasaPosicao21();
                 break;
             case 22:
                 casaDaPosicao.getCasaPosicao22();
@@ -140,9 +149,9 @@ public class Tabuleiro {
             case 30:
                 casaDaPosicao.getCasaPosicao30();
                 break;
-        }*/
+        }
     }
-    
+
     private void embaralharCartas() {
         Casa casa = new Casa();
         casa.embaralharCartas();
@@ -150,7 +159,7 @@ public class Tabuleiro {
 
     public void setJogadores(List temp) {
         List<Pessoa> t = temp;
-        for(Pessoa p : t){
+        for (Pessoa p : t) {
             System.out.println(p.getId() + " - " + p.getNome());
         }
     }

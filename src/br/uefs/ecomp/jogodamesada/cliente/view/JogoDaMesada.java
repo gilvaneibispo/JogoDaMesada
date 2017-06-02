@@ -2,7 +2,7 @@ package br.uefs.ecomp.jogodamesada.cliente.view;
 
 import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerComunicacao;
 import br.uefs.ecomp.jogodamesada.cliente.model.*;
-import br.uefs.ecomp.jogodamesada.cliente.model.Tabuleiro;
+import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerTabuleiro;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,13 +15,14 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class JogoDaMesa extends javax.swing.JFrame {
+public class JogoDaMesada extends javax.swing.JFrame {
 
     private JLabel J1 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
     private JLabel J2 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
@@ -43,17 +44,17 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private int posicaoAtual;
     private Pessoa jogadorLocal;
     private Casa casa;
-    private Tabuleiro objTabuleiro;
+    private ControllerTabuleiro objTabuleiro;
     private String host;
     private String porta;
     private List<Pessoa> jogadores;
 
-    public JogoDaMesa() {
+    public JogoDaMesada() {
         initComponents();
         this.configuracoesAdicionais();
         this.configuraIcon();
         jogadorLocal = new Pessoa();
-        objTabuleiro = new Tabuleiro();
+        objTabuleiro = new ControllerTabuleiro();
         casa = new Casa();
         host = "127.0.0.1";
         porta = "12345";
@@ -100,6 +101,10 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
         this.btnEmprestimo.setEnabled(false);
         this.btn_jogar.setEnabled(false);
+
+        this.status_label.setText("Iniciando aplicação...");
+        this.nome_label.setText("");
+        this.saldo_label.setText("");
     }
 
     private void configuraIcon() {
@@ -109,6 +114,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }
 
     private void controleDeFuncoesDeLogin() {
+        this.nome_label.setText(this.jogadorLocal.getNome());
+        //this.saldo_label.setText("R$: " + this.jogadorLocal.getConta().getSaldo());
+        this.status_label.setText("Conectado...");
         this.btnConectar.setEnabled(false);
         this.btnCadastro.setEnabled(false);
     }
@@ -126,8 +134,8 @@ public class JogoDaMesa extends javax.swing.JFrame {
         String[] listData = new String[6];
 
         for (int j = 0; j < jogador.size(); j++) {
-            listData[j] = jogador.get(j).getId() + " : " + jogador.get(j).getNome() 
-            + "[mês: " + jogador.get(j).getMes() + "]";
+            listData[j] = this.jogadores.get(j).getId() + " : " + this.jogadores.get(j).getNome()
+                    + " [mês: " + this.jogadores.get(j).getMes() + "]";
         }
 
         this.lista_jogadores.setListData(listData);
@@ -154,17 +162,104 @@ public class JogoDaMesa extends javax.swing.JFrame {
         this.jogadores = jogadores;
     }
 
+    public void setStatusLabel(String msg) {
+        this.status_label.setText(msg);
+    }
+
+    public void setBotoesCarta(int botao, int cartaId) {
+        if (botao == 1) {
+            this.setBackgroundBotaoCarta(this.carta01, cartaId);
+        }else if (botao == 2) {
+            this.setBackgroundBotaoCarta(this.carta02, cartaId);
+        }else if (botao == 3) {
+            this.setBackgroundBotaoCarta(this.carta03, cartaId);
+        }
+    }
+
+    private void setBackgroundBotaoCarta(JButton botao, int cartaId) {
+        ImageIcon img = null;
+        String caminho = "..\\image\\carta-";
+        switch (cartaId) {
+            case 0:
+                img = new ImageIcon(getClass().getResource("..\\image\\cartaDefault.png"));
+                botao.setEnabled(false);
+                System.err.println(caminho + "dd.png");
+                break;
+            case 1:
+                img = new ImageIcon(getClass().getResource(caminho + "01.png"));
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            case 2:
+                img = new ImageIcon(getClass().getResource(caminho + "02.png"));
+                botao.setEnabled(true);
+                System.err.println(caminho + "02.png");
+                break;
+            case 3:
+                img = new ImageIcon(getClass().getResource(caminho + "03.png"));
+                botao.setEnabled(true);
+                System.err.println(caminho + "03.png");
+                break;
+            case 4:
+                img = new ImageIcon(caminho + "01.png");
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            case 5:
+                img = new ImageIcon(caminho + "01.png");
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            case 6:
+                img = new ImageIcon(caminho + "01.png");
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            case 7:
+                img = new ImageIcon(caminho + "01.png");
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            case 8:
+                img = new ImageIcon(caminho + "01.png");
+                botao.setEnabled(true);
+                System.err.println(caminho + "01.png");
+                break;
+            default:
+                img = new ImageIcon("..\\image\\cartaDefault.png");
+                System.err.println(caminho + "01.png");
+                botao.setEnabled(false);
+        }
+        System.err.println("Ação: " + cartaId);
+        botao.setIcon(img);
+    }
+
     public void setLogodo(int participantes) {
-        JOptionPane.showMessageDialog(this, "Você está logado");
+        new BarraDeProgresso();
+
+        //Recuperando a lista de jogadores recebida do servidor na classe ClienteP2P
         ControllerComunicacao cc = ControllerComunicacao.getInstance();
         List temp = cc.getJogadores();
-        ControllerComunicacao.getInstance().getC().getP().setTabuleiro(this);
+        ClienteP2P cp2p = cc.getClienteP2P();
+
+        //Setando a instancia de interface padrão na classe ClienteP2P
+        ControllerComunicacao.getInstance().getCliente().getClienteP2P().setTabuleiro(this);
+
+        //Setando valores importantes...
         this.setJogadores(temp);
         this.setJListJogadores(temp);
         this.controleDeFuncoesDeLogin();
         this.atualizandoJogadorLocal(temp);
         this.desabilitaJogadoresEmExcesso(temp.size());
+        this.habilitarJogador();
+
+        //Setando JogadorLocal e lista de todos os jogadores da sala no ControllerTabuleiro 
         objTabuleiro.setJogadores(temp);
+        objTabuleiro.setJogadorLocal(this.jogadorLocal);
+        objTabuleiro.setClienteP2P(cp2p);
+    }
+
+    private void habilitarJogador() {
         HabilitaJogador habilitar = new HabilitaJogador(this);
         Thread h = new Thread(habilitar);
         h.start();
@@ -232,10 +327,15 @@ public class JogoDaMesa extends javax.swing.JFrame {
         }
         return rt;
     }
-    
-    public int getPosicaoPeaoAtual(String id_jogador){
+
+    public int getPosicaoPeaoAtual(String id_jogador) {
         Movimento mtemp = getClasseJogador(id_jogador);
         return mtemp.calculaPosicao();
+    }
+    
+    public int getPosicao(String id_jogador){
+        Movimento mtemp = getClasseJogador(id_jogador);
+        return mtemp.getPosicao();
     }
 
     /**
@@ -369,6 +469,11 @@ public class JogoDaMesa extends javax.swing.JFrame {
         dia_ter = new javax.swing.JLabel();
         dia_qua = new javax.swing.JLabel();
         linhaSuperior = new javax.swing.JSeparator();
+        jSeparator1 = new javax.swing.JSeparator();
+        nome_label = new javax.swing.JLabel();
+        saldo_label = new javax.swing.JLabel();
+        status_label = new javax.swing.JLabel();
+        btn_teste = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -387,6 +492,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(36, 46, 68));
 
+        hostConfig.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
         hostConfig.setText("Configurar Host");
         hostConfig.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         hostConfig.addActionListener(new java.awt.event.ActionListener() {
@@ -650,6 +756,27 @@ public class JogoDaMesa extends javax.swing.JFrame {
         linhaSuperior.setBackground(new java.awt.Color(88, 196, 196));
         linhaSuperior.setForeground(new java.awt.Color(88, 196, 196));
 
+        jSeparator1.setForeground(new java.awt.Color(88, 196, 196));
+
+        nome_label.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        nome_label.setForeground(new java.awt.Color(255, 255, 255));
+        nome_label.setText("Nome");
+
+        saldo_label.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        saldo_label.setForeground(new java.awt.Color(255, 255, 255));
+        saldo_label.setText("Saldo");
+
+        status_label.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        status_label.setForeground(new java.awt.Color(255, 255, 255));
+        status_label.setText("Status");
+
+        btn_teste.setText("Botão de Teste");
+        btn_teste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_testeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -657,24 +784,6 @@ public class JogoDaMesa extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(painelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn_jogar, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btn_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(statusAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                                        .addComponent(PainelDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(454, 454, 454)
-                                .addComponent(btnEmprestimo, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -698,17 +807,39 @@ public class JogoDaMesa extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(dia_sab, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(61, 61, 61)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                             .addComponent(btnConectar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane2)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(hostConfig)
-                        .addGap(952, 952, 952)
-                        .addComponent(Extra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(20, 20, 20))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(painelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hostConfig)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(nome_label)
+                                .addGap(369, 369, 369)
+                                .addComponent(saldo_label))
+                            .addComponent(status_label)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btn_jogar, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(statusAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                .addComponent(PainelDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEmprestimo, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                            .addComponent(Extra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 312, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(508, 508, 508)
+                .addGap(102, 102, 102)
+                .addComponent(btn_teste)
+                .addGap(333, 333, 333)
                 .addComponent(icone)
                 .addGap(18, 18, 18)
                 .addComponent(nome_jogo)
@@ -717,10 +848,15 @@ public class JogoDaMesa extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(icone)
-                    .addComponent(nome_jogo))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(icone)
+                            .addComponent(nome_jogo)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(btn_teste, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -761,8 +897,16 @@ public class JogoDaMesa extends javax.swing.JFrame {
                         .addComponent(tabuleiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(painelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addComponent(hostConfig)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nome_label)
+                            .addComponent(saldo_label))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(status_label)
+                        .addGap(10, 10, 10)
+                        .addComponent(hostConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -772,7 +916,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 942, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -788,7 +932,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConectarActionPerformed
 
     private void ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActionPerformed
-
+        this.setBotoesCarta(1, 1);
+        this.setBotoesCarta(2, 2);
+        this.setBotoesCarta(3, 3);
     }//GEN-LAST:event_ExtraActionPerformed
 
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
@@ -809,7 +955,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_carta02ActionPerformed
 
     private void btnEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmprestimoActionPerformed
-       
+
     }//GEN-LAST:event_btnEmprestimoActionPerformed
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
@@ -828,7 +974,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
             //objTabuleiro.getAcaoParaPosicao(posicaoAtual);
             ControllerComunicacao.getInstance().moverPeao(this.jogadorLocal.getId(), digitado);
         } catch (IOException ex) {
-            Logger.getLogger(JogoDaMesa.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_jogarActionPerformed
 
@@ -836,6 +982,13 @@ public class JogoDaMesa extends javax.swing.JFrame {
         ConfigurarHost hostCon = new ConfigurarHost();
         hostCon.setClasseMae(this);
     }//GEN-LAST:event_hostConfigActionPerformed
+
+    private void btn_testeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_testeActionPerformed
+        this.calculaDistancia(this.jogadorLocal.getId(), 1);
+        int p = this.getPosicao(jogadorLocal.getId());
+        System.err.println("Posição atual: " + p);
+        objTabuleiro.getAcaoParaPosicao(p);
+    }//GEN-LAST:event_btn_testeActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -846,10 +999,11 @@ public class JogoDaMesa extends javax.swing.JFrame {
             JOptionPane.showInternalMessageDialog(null, "Erro no carregamento gráfico: " + ex.getMessage());
         }
         java.awt.EventQueue.invokeLater(() -> {
-            new JogoDaMesa().setVisible(true);
+            new JogoDaMesada().setVisible(true);
         });
     }
-    public boolean emprestimo(double valor){
+
+    public boolean emprestimo(double valor) {
         JOptionPane.showInputDialog("Voce Precisa De Um Emprestimo");
         this.btnEmprestimo.setEnabled(true);
         return this.btnEmprestimo.isShowing();
@@ -863,6 +1017,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private javax.swing.JButton btnEmprestimo;
     private javax.swing.JButton btn_jogar;
     private javax.swing.JButton btn_sair;
+    private javax.swing.JButton btn_teste;
     private javax.swing.JButton carta01;
     private javax.swing.JButton carta02;
     private javax.swing.JButton carta03;
@@ -884,12 +1039,16 @@ public class JogoDaMesa extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator linhaSuperior;
     private javax.swing.JList<String> lista_jogadores;
     private javax.swing.JLabel nome_casa_label;
     private javax.swing.JLabel nome_jogo;
+    private javax.swing.JLabel nome_label;
     private javax.swing.JPanel painelCartas;
+    private javax.swing.JLabel saldo_label;
     private javax.swing.JPanel statusAtual;
+    private javax.swing.JLabel status_label;
     private javax.swing.JPanel tabuleiro;
     // End of variables declaration//GEN-END:variables
 
@@ -900,15 +1059,17 @@ public class JogoDaMesa extends javax.swing.JFrame {
         private JLabel jg = null;
         private int larguraDaCasa = 120;
         private int alturaDaCasa = 62;
+        private int posicao;
 
         public Movimento(JLabel jogador) {
             this.jg = jogador;
             xAtual = 0;
             yAtual = 12;
+            posicao = 0;
         }
 
         public void setValor(int value) {
-
+            posicao = posicao + valor;
             valor = value;
         }
 
@@ -971,44 +1132,19 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
                     jg.setBounds(jg.getX() + 8, yAtual, 100, 50);
                 }
-
-                int linhasInteiras = 0;
-                int ultimaLinha = 0;
-
-                if (jg.getY() <= alturaDaCasa) {
-                    linhasInteiras = 0;
-                } else if (jg.getY() > alturaDaCasa && jg.getY() < alturaDaCasa * 2) {
-                    linhasInteiras = 7;
-                } else if (jg.getY() > alturaDaCasa * 2 && jg.getY() < alturaDaCasa * 3) {
-                    linhasInteiras = 14;
-                } else if (jg.getY() > alturaDaCasa * 3 && jg.getY() < alturaDaCasa * 4) {
-                    linhasInteiras = 21;
-                } else if (jg.getY() > alturaDaCasa * 4) {
-                    linhasInteiras = 28;
-                }
-
-                if (jg.getX() <= larguraDaCasa) {
-                    ultimaLinha = 1;
-                } else if (jg.getX() > larguraDaCasa && jg.getX() < larguraDaCasa * 2) {
-                    ultimaLinha = 2;
-                } else if (jg.getX() > larguraDaCasa * 2 && jg.getX() < larguraDaCasa * 3) {
-                    ultimaLinha = 3;
-                } else if (jg.getX() > larguraDaCasa * 3 && jg.getX() < larguraDaCasa * 4) {
-                    ultimaLinha = 4;
-                } else if (jg.getX() > larguraDaCasa * 4 && jg.getX() < larguraDaCasa * 5) {
-                    ultimaLinha = 5;
-                } else if (jg.getX() > larguraDaCasa * 5 && jg.getX() < larguraDaCasa * 6) {
-                    ultimaLinha = 6;
-                } else if (jg.getX() > larguraDaCasa * 6) {
-                    ultimaLinha = 7;
-                }
-
-                posicaoAtual = linhasInteiras + ultimaLinha;
             }
         }
+        
+        public void setPosicao(int pos){
+            posicao = posicao + pos;
+        }
+        
+        public int getPosicao(){
+            return posicao;
+        }
 
-        private int calculaPosicao() {
-
+        private int calculaPosicao() {          
+           
             int linhasInteiras = 0;
             int ultimaLinha = 0;
 
@@ -1045,16 +1181,16 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
     class HabilitaJogador extends Thread {
 
-        private JogoDaMesa tabuleiro;
+        private JogoDaMesada tabuleiro;
 
-        public HabilitaJogador(JogoDaMesa tabuleiro) {
+        public HabilitaJogador(JogoDaMesada tabuleiro) {
             this.tabuleiro = tabuleiro;
         }
 
         @Override
         public void run() {
             while (true) {
-                if (ControllerComunicacao.getInstance().getC().getP().eMeuTurno(jogadorLocal.getNome())) {
+                if (ControllerComunicacao.getInstance().getCliente().getClienteP2P().eMeuTurno(jogadorLocal.getNome())) {
                     this.tabuleiro.btn_jogar.setEnabled(true);
                     this.tabuleiro.btnEmprestimo.setEnabled(true);
                 } else {
@@ -1068,9 +1204,9 @@ public class JogoDaMesa extends javax.swing.JFrame {
 
     class JogadorAway extends Thread {
 
-        private JogoDaMesa tabuleiro;
+        private JogoDaMesada tabuleiro;
 
-        public JogadorAway(JogoDaMesa tabuleiro) {
+        public JogadorAway(JogoDaMesada tabuleiro) {
             this.tabuleiro = tabuleiro;
         }
 
@@ -1078,7 +1214,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
         public void run() {
             long tempInicial = 0;  //Tempo inicial
             while (true) {
-                if (this.tabuleiro.btn_jogar.isEnabled() || this.tabuleiro.btnEmprestimo.isEnabled()) { 
+                if (this.tabuleiro.btn_jogar.isEnabled() || this.tabuleiro.btnEmprestimo.isEnabled()) {
                     //Se um dos botoes estiver enable, ou seja passiveis de serem clicados oq acontece apenas na vez do player
                     if (tempInicial == 0) {
                         tempInicial = System.currentTimeMillis();  //O tempo inicial assume o valor do relogio 
@@ -1090,7 +1226,7 @@ public class JogoDaMesa extends javax.swing.JFrame {
                             //O player perde a sua vez
                             tempInicial = 0;
                         } catch (IOException ex) {
-                            Logger.getLogger(JogoDaMesa.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 

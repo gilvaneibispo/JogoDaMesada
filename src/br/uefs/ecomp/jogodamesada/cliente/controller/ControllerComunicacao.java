@@ -6,6 +6,7 @@
 package br.uefs.ecomp.jogodamesada.cliente.controller;
 
 import br.uefs.ecomp.jogodamesada.cliente.model.Cliente;
+import br.uefs.ecomp.jogodamesada.cliente.model.ClienteP2P;
 import br.uefs.ecomp.jogodamesada.cliente.model.Pessoa;
 import java.io.IOException;
 import java.util.List;
@@ -15,17 +16,17 @@ import java.util.List;
  * @author User
  */
 public class ControllerComunicacao {
-
-    /**
-     * @return the c
-     */
-    public Cliente getC() {
-        return c;
-    }
-
-    private Cliente c;
+    
+    private Cliente cliente;
     private static ControllerComunicacao controller;
 
+    /**
+     * @return the cliente
+     */
+    public Cliente getCliente() {
+        return cliente;
+    }
+  
     /**
      * Contrutor da classe ControllerCliente,essa classe utiliza o padrão de
      * projeto singleton, com um contrutor privado que garante que apenas uma
@@ -33,11 +34,15 @@ public class ControllerComunicacao {
      *
      */
     private ControllerComunicacao() {
-        c = new Cliente();
+        cliente = new Cliente();
     }
     
     public List<Pessoa> getJogadores(){
-        return getC().getJogadores();
+        return getCliente().getJogadores();
+    }
+    
+    public ClienteP2P getClienteP2P(){
+        return this.getCliente().getClienteP2P();
     }
 
     /**
@@ -65,30 +70,30 @@ public class ControllerComunicacao {
      * uma conexão com o servidor
      */
     public void acessoServidor(String ip, String porta) throws IOException {
-        getC().acessarServidor(ip, porta);
+        getCliente().acessarServidor(ip, porta);
     }
 
     public int cadastrarUsuario(String nome, String senha) {
-        return getC().cadastrarUsuario(nome, senha);
+        return getCliente().cadastrarUsuario(nome, senha);
     }
 
     public int logar(String nome, String senha) throws IOException {
-        return getC().logar(nome, senha);
+        return getCliente().logar(nome, senha);
     }
 
     public boolean conectarSala(String players, String periodo) throws IOException {
-        return getC().conectarSala(players, periodo);
+        return getCliente().conectarSala(players, periodo);
     }
 
     public void moverPeao(String id, int dado) throws IOException {
-        getC().moverPeao(id, dado);
+        getCliente().moverPeao(id, dado);
     }
 
     public void perdeuSuaVez() throws IOException {
-        c.perdeuSuaVez();
+        cliente.perdeuSuaVez();
     }
     public void felizAniversario(int id) throws IOException{
-        c.felizAniversario(id);
+        cliente.felizAniversario(id);
     }
 
 }

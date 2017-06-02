@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author Gilvanei
  */
-class Carta {
+public class Carta {
 
     @XmlElement(name = "ID")
     private static int ID;//identificador;
@@ -144,5 +144,9 @@ class Carta {
                 casaDaPosicao.getCasaPosicao30();
                 break;
         }*/
+    }
+
+    void getAcaoCarta(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
