@@ -16,6 +16,7 @@ public class Pessoa implements Serializable {
     private String id;
     private int mesAtual;
     private Conta conta;
+    private boolean fim;
     //private Endereco endereco;
 
     public Pessoa() {
@@ -65,5 +66,19 @@ public class Pessoa implements Serializable {
 
     public int getMes() {
         return this.mesAtual;
+    }
+
+    /**
+     * @return the fim
+     */
+    public boolean isFim() {
+        return fim;
+    }
+
+    /**
+     * @param fim the fim to set
+     */
+    public void setFim(boolean fim) {
+        this.fim = fim;
     }
 }

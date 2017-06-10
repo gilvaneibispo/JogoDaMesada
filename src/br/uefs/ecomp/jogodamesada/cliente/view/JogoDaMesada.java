@@ -2,12 +2,16 @@ package br.uefs.ecomp.jogodamesada.cliente.view;
 
 import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerComunicacao;
 import br.uefs.ecomp.jogodamesada.cliente.model.*;
-import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerTabuleiro;
+import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerAcoesTabuleiro;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
@@ -16,6 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -24,40 +30,58 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class JogoDaMesada extends javax.swing.JFrame {
 
-    private JLabel J1 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
-    private JLabel J2 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
-    private JLabel J3 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
-    private JLabel J4 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
-    private JLabel J5 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-01.png")));
-    private JLabel J6 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\jogador-02.png")));
+    private JLabel J1;
+    private JLabel J2;
+    private JLabel J3;
+    private JLabel J4;
+    private JLabel J5;
+    private JLabel J6;
 
-    private JLabel imagens[] = new JLabel[5];
-    private Movimento movimentos[] = new Movimento[5];
-    private ImageIcon icons[] = new ImageIcon[5];
-    private Movimento M1 = new Movimento(J1);
-    private Movimento M2 = new Movimento(J2);
-    private Movimento M3 = new Movimento(J3);
-    private Movimento M4 = new Movimento(J4);
-    private Movimento M5 = new Movimento(J5);
-    private Movimento M6 = new Movimento(J6);
+    private Movimento M1;
+    private Movimento M2;
+    private Movimento M3;
+    private Movimento M4;
+    private Movimento M5;
+    private Movimento M6;
 
     private int posicaoAtual;
     private Pessoa jogadorLocal;
     private Casa casa;
-    private ControllerTabuleiro objTabuleiro;
+    private ControllerAcoesTabuleiro objTabuleiro;
     private String host;
     private String porta;
     private List<Pessoa> jogadores;
 
     public JogoDaMesada() {
         initComponents();
+        iniciaPeoes();
         this.configuracoesAdicionais();
         this.configuraIcon();
         jogadorLocal = new Pessoa();
-        objTabuleiro = new ControllerTabuleiro();
+        objTabuleiro = new ControllerAcoesTabuleiro();
         casa = new Casa();
         host = "127.0.0.1";
         porta = "12345";
+        PreparaFimConexao p = new PreparaFimConexao();
+        p.preparaFimConexao(this);
+
+    }
+
+    public void iniciaPeoes() {
+        J1 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P1.png")));
+        J2 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P2.png")));
+        J3 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P3.png")));
+        J4 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P4.png")));
+        J5 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P5.png")));
+        J6 = new JLabel(new ImageIcon(getClass().getResource("..\\image\\P6.png")));
+
+        M1 = new Movimento(J1);
+        M2 = new Movimento(J2);
+        M3 = new Movimento(J3);
+        M4 = new Movimento(J4);
+        M5 = new Movimento(J5);
+        M6 = new Movimento(J6);
+
     }
 
     private void configuracoesAdicionais() {
@@ -104,7 +128,7 @@ public class JogoDaMesada extends javax.swing.JFrame {
 
         this.status_label.setText("Iniciando aplicação...");
         this.nome_label.setText("");
-        this.saldo_label.setText("");
+        this.getSaldo_label().setText("");
     }
 
     private void configuraIcon() {
@@ -115,8 +139,7 @@ public class JogoDaMesada extends javax.swing.JFrame {
 
     private void controleDeFuncoesDeLogin() {
         this.nome_label.setText(this.jogadorLocal.getNome());
-        //this.saldo_label.setText("R$: " + this.jogadorLocal.getConta().getSaldo());
-        this.status_label.setText("Conectado...");
+        this.getSaldo_label().setText("R$: " + this.jogadorLocal.getConta().getSaldo());
         this.btnConectar.setEnabled(false);
         this.btnCadastro.setEnabled(false);
     }
@@ -169,9 +192,9 @@ public class JogoDaMesada extends javax.swing.JFrame {
     public void setBotoesCarta(int botao, int cartaId) {
         if (botao == 1) {
             this.setBackgroundBotaoCarta(this.carta01, cartaId);
-        }else if (botao == 2) {
+        } else if (botao == 2) {
             this.setBackgroundBotaoCarta(this.carta02, cartaId);
-        }else if (botao == 3) {
+        } else if (botao == 3) {
             this.setBackgroundBotaoCarta(this.carta03, cartaId);
         }
     }
@@ -248,12 +271,14 @@ public class JogoDaMesada extends javax.swing.JFrame {
         //Setando valores importantes...
         this.setJogadores(temp);
         this.setJListJogadores(temp);
-        this.controleDeFuncoesDeLogin();
         this.atualizandoJogadorLocal(temp);
+        this.controleDeFuncoesDeLogin();
         this.desabilitaJogadoresEmExcesso(temp.size());
         this.habilitarJogador();
-
-        //Setando JogadorLocal e lista de todos os jogadores da sala no ControllerTabuleiro 
+        //this.jogadorAway();
+        this.fimPartida();
+        
+        //Setando JogadorLocal e lista de todos os jogadores da sala no ControllerAcoesTabuleiro 
         objTabuleiro.setJogadores(temp);
         objTabuleiro.setJogadorLocal(this.jogadorLocal);
         objTabuleiro.setClienteP2P(cp2p);
@@ -263,6 +288,18 @@ public class JogoDaMesada extends javax.swing.JFrame {
         HabilitaJogador habilitar = new HabilitaJogador(this);
         Thread h = new Thread(habilitar);
         h.start();
+    }
+
+    private void jogadorAway() {
+        JogadorAway away = new JogadorAway(this);
+        Thread a = new Thread(away);
+        a.start();
+    }
+    
+    private void fimPartida() {
+        FimPartida fim = new FimPartida(this);
+        Thread f = new Thread(fim);
+        f.start();
     }
 
     /**
@@ -332,8 +369,8 @@ public class JogoDaMesada extends javax.swing.JFrame {
         Movimento mtemp = getClasseJogador(id_jogador);
         return mtemp.calculaPosicao();
     }
-    
-    public int getPosicao(String id_jogador){
+
+    public int getPosicao(String id_jogador) {
         Movimento mtemp = getClasseJogador(id_jogador);
         return mtemp.getPosicao();
     }
@@ -347,6 +384,7 @@ public class JogoDaMesada extends javax.swing.JFrame {
         for (Pessoa p : listaJogador) {
             if (this.jogadorLocal.getNome().equals(p.getNome())) {
                 this.jogadorLocal = p;
+                ControllerComunicacao.getInstance().getCliente().getClienteP2P().setJogadorLocal(jogadorLocal);
             }
         }
     }
@@ -960,9 +998,16 @@ public class JogoDaMesada extends javax.swing.JFrame {
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
         if (JOptionPane.showConfirmDialog(btn_sair, "Tem certeza que deseja sair?", "Sair do Jogo", 2, 0) == 0) {
-
+            try {
+                ControllerComunicacao.getInstance().sairDaPartida(jogadorLocal.getId());
+                System.exit(0);
+            } catch (IOException ex) {
+                Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.exit(0);
         }
+
+
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void btn_jogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_jogarActionPerformed
@@ -973,6 +1018,18 @@ public class JogoDaMesada extends javax.swing.JFrame {
             //this.calculaDistancia(this.jogadorLocal.getId(), digitado);
             //objTabuleiro.getAcaoParaPosicao(posicaoAtual);
             ControllerComunicacao.getInstance().moverPeao(this.jogadorLocal.getId(), digitado);
+            // objTabuleiro.getAcaoParaPosicao(this.getPosicaoPeaoAtual(jogadorLocal.getId()));
+            //Esse metodo deveria retornar o numero da casa
+            objTabuleiro.getAcaoParaPosicao(8);   //envia 13 para metodo que identifica a ação, nesse caso é o bolão de esportes
+
+            if (digitado == 6) {
+                ControllerComunicacao.getInstance().resgatarSorteGrande(this.jogadorLocal.getId());
+                this.setStatusLabel("Voce Teve A Sorte Grande");
+                System.out.println("Voce Teve A Sorte Grande!!");
+            }
+            System.err.println("Interface" + jogadorLocal.getConta().getSaldo());
+            this.getSaldo_label().setText("R$: " + this.jogadorLocal.getConta().getSaldo());
+            ControllerComunicacao.getInstance().proximoAJogar();
         } catch (IOException ex) {
             Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -987,7 +1044,7 @@ public class JogoDaMesada extends javax.swing.JFrame {
         this.calculaDistancia(this.jogadorLocal.getId(), 1);
         int p = this.getPosicao(jogadorLocal.getId());
         System.err.println("Posição atual: " + p);
-        objTabuleiro.getAcaoParaPosicao(p);
+        //objTabuleiro.getAcaoParaPosicao(p);
     }//GEN-LAST:event_btn_testeActionPerformed
 
     public static void main(String args[]) {
@@ -1004,10 +1061,55 @@ public class JogoDaMesada extends javax.swing.JFrame {
     }
 
     public boolean emprestimo(double valor) {
-        JOptionPane.showInputDialog("Voce Precisa De Um Emprestimo");
+        JOptionPane.showMessageDialog(null, "Seu Saldo é insuficiente\n Realize um Emprestimo No Valor De" + valor);
         this.btnEmprestimo.setEnabled(true);
+        btnEmprestimo.doClick();
         return this.btnEmprestimo.isShowing();
     }
+
+    public int ConcursoDeBandaDeRock() {
+        JOptionPane.showMessageDialog(this, "Voce esta participando Do Concurso De Banda De Rock\n Por Favor Clique Para Jogar o dado!");
+        int dado = this.jogarDado();
+        dado_num.setText(dado + "");
+        return dado;
+    }
+
+    public int participarBolaoEsportes() {
+        //JOptionPane.showMessageDialog(this, "Informe Um Valor Para Participar Do Bolao!");
+        int dado = this.jogarDado();
+        dado_num.setText(dado + "");
+        return dado;
+    }
+
+    public void informarVencedor() {
+        JOptionPane.showMessageDialog(null, "Os demais particpantes desistiram parabens voce é o vencedor!");
+        System.exit(0);
+    }
+
+    public double pagarDividas() {
+        String num = JOptionPane.showInputDialog("Informe um numero caso deseje participar do bolao de esportes!!");
+        return Double.parseDouble(num);
+    }
+
+    public int maratonaBenefiente() {
+        JOptionPane.showMessageDialog(this, "Voce esta participando Da Maratona Beneficiente\n Por Favor Clique Para Jogar o dado!");
+        System.out.println("Passou");
+        int dado = this.jogarDado();
+        dado_num.setText(dado + "");
+        return dado;
+    }
+
+    public void atalizarSaldo() {
+        this.getSaldo_label().setText("R$: " + this.jogadorLocal.getConta().getSaldo());
+    }
+
+    public int sortearGanhadorBolao() {
+        JOptionPane.showMessageDialog(this, "Jogue O Dado Para definir o ganhadoir do bolçao!");
+        int dado = this.jogarDado();
+        dado_num.setText(dado + "");
+        return dado;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Extra;
@@ -1125,26 +1227,61 @@ public class JogoDaMesada extends javax.swing.JFrame {
 
                     //Não permite parar nas posições acima de 30 (dia do mês maior que 30). 
                     if (jg.getY() > 200 && jg.getY() < 300 && jg.getX() > 240) {
-                        //jg.setBounds(0, 12, 100, 50);
-                        yAtual = 12;
-                        xAtual = xAtual - 240;
+                        try {
+                            if (ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual().getId().equals(jogadorLocal.getId())) {
+                                objTabuleiro.getAcaoParaPosicao(31);
+                                System.err.println("Dia da Mesada");
+                                
+                            }
+                            Thread.currentThread().wait();
+                           /* if (ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual().getMes() == ControllerComunicacao.getInstance().getClienteP2P().getDuracao()) {
+                                System.out.println("Terminei");
+                                ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual().setFim(true);
+                                List<Pessoa> temp = ControllerComunicacao.getInstance().getClienteP2P().getJogadores();
+                                int total = 0;
+                                for (int i = 0; i < temp.size(); i++) {
+                                    Pessoa p = temp.get(i);
+                                    if (p.isFim()) {
+                                        total++;
+                                    }
+                                }
+                                if(total == 2){
+                                   List ordenada = ControllerComunicacao.getInstance().solicitarRank(jogadorLocal.getId(), jogadorLocal.getConta().getSaldo());
+                                   //exibir a lista;
+                                    System.out.println("Exibir a pontuacão");
+                                }
+                            } else {
+                                ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual().setMes(ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual().getMes() + 1);
+                                System.out.println(ControllerComunicacao.getInstance().getClienteP2P().getJogadorAtual());
+                                List temp = ControllerComunicacao.getInstance().getClienteP2P().getJogadores();
+                                setJListJogadores(temp);
+                                //jg.setBounds(0, 12, 100, 50);
+                                yAtual = 12;
+                                xAtual = xAtual - 240;
+                            */
+                            
+                        } catch (IOException ex) {
+                            Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
 
                     jg.setBounds(jg.getX() + 8, yAtual, 100, 50);
                 }
             }
         }
-        
-        public void setPosicao(int pos){
+
+        public void setPosicao(int pos) {
             posicao = posicao + pos;
         }
-        
-        public int getPosicao(){
+
+        public int getPosicao() {
             return posicao;
         }
 
-        private int calculaPosicao() {          
-           
+        private int calculaPosicao() {
+
             int linhasInteiras = 0;
             int ultimaLinha = 0;
 
@@ -1219,12 +1356,14 @@ public class JogoDaMesada extends javax.swing.JFrame {
                     if (tempInicial == 0) {
                         tempInicial = System.currentTimeMillis();  //O tempo inicial assume o valor do relogio 
                     }
-                    if ((tempInicial + 30000) > System.currentTimeMillis()) {
+                    if (System.currentTimeMillis() > (tempInicial + 30000)) {
                         try {
-                            //Se o valor inicial + 30 segundos for maior que o valor atual do relogio do sistema
+                            //Se o valor atual do relogio do sisteman for maior que o valor inicial + 30 segundos 
                             ControllerComunicacao.getInstance().perdeuSuaVez();
                             //O player perde a sua vez
                             tempInicial = 0;
+                            JOptionPane.showMessageDialog(tabuleiro, "Desculpa: Você perdeu a vez de jogar!");
+
                         } catch (IOException ex) {
                             Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1233,6 +1372,59 @@ public class JogoDaMesada extends javax.swing.JFrame {
                 } else {
                     tempInicial = 0;   //Se os botoes não forem passiveis de receber um click o relogio assume o valor 0
                 }
+            }
+        }
+    }
+
+    /**
+     * @return the saldo_label
+     */
+    public javax.swing.JLabel getSaldo_label() {
+        return saldo_label;
+    }
+
+    public class PreparaFimConexao {
+
+        /**
+         * Metodo que inutiliza o botão de fechar do frame, e implementa uma
+         * classe anonima WindowAdapter, sobreescrevendo o metodo windowClosing
+         * que funciona como um ouvinte e executa a finalização da comunicação
+         * entre cliente e servidor quando o ouvinte é ascionado
+         *
+         * @param fj
+         */
+        public void preparaFimConexao(JFrame fj) {
+            //Inutiliza o botão fechar do frame:
+            fj.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            fj.addWindowListener(new WindowAdapter() {
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    try {
+                        ControllerComunicacao.getInstance().sairDaPartida(jogadorLocal.getId());
+                    } catch (IOException ex) {
+                        Logger.getLogger(JogoDaMesada.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    // cu.finalizarConexao();
+                    JOptionPane.showMessageDialog(null, "MUITO OBRIGADO!");
+                    System.exit(0);
+
+                }
+            });
+        }
+    }
+      class FimPartida extends Thread {
+
+        private JogoDaMesada tabuleiro;
+
+        public FimPartida(JogoDaMesada tabuleiro) {
+            this.tabuleiro = tabuleiro;
+        }
+
+        @Override
+        public void run() {
+            while (true){
+
             }
         }
     }

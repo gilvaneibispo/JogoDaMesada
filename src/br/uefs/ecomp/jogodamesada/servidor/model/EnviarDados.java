@@ -28,11 +28,11 @@ class EnviarDados {
     private final static GerenciadorDeIp IP = new GerenciadorDeIp();
 
 
-    public void startGame(List<Usuario> players, int numPlayers) throws  UnknownHostException, SocketException, IOException {
+    public void startGame(List<Usuario> players, int numPlayers, Sala sala) throws  UnknownHostException, SocketException, IOException {
          try {
              InetAddress address = EnviarDados.IP.getMulticastIP();
              StringBuilder data = new StringBuilder();
-             data.append(ProtocoloP2P.CONFIGURACOES).append(ProtocoloServidor.SEPARATOR);
+             data.append(sala.getIdSala()).append(ProtocoloServidor.SEPARATOR).append(sala.getPeriodo()).append(ProtocoloServidor.SEPARATOR);
              int id =0;
              for (Usuario player : players) {
                  System.out.println(player);
@@ -45,16 +45,20 @@ class EnviarDados {
                  //Enviar ip do multicast via TCP
                  player.getOutput().writeObject(address);
              }
+             Thread.sleep(this.SLEEP_TIME);
              String message = data.toString();
+              for (Usuario player : players) {
+                 //Enviar ip do multicast via TCP
+                 player.getOutput().writeObject(message);
+             }
              
-             //Preparação do pacote a ser enviado
+            /* //Preparação do pacote a ser enviado
              byte[] buffer = message.getBytes();
              DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, this.PORT);
              DatagramSocket socket = new DatagramSocket();
              
-             Thread.sleep(this.SLEEP_TIME);
-             
              socket.send(packet);
+*/
              System.out.println("100%");
          } catch (InterruptedException ex) {
              Logger.getLogger(EnviarDados.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,7 +5,9 @@
  */
 package br.uefs.ecomp.jogodamesada.cliente.model;
 
+import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerComunicacao;
 import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesada;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.xml.bind.annotation.XmlElement;
@@ -94,6 +96,7 @@ public class Casa {
     }
 
     public void getAcaoCasaCorreio(int qdt) {
+        System.out.println("Correios");
         for(int i = 1; qdt < 0; i++) {
             cartasSorteadas.add(cartas.get(posicaoArrayCartas));
             tela.setBotoesCarta(i, cartasSorteadas.get(i - 1).getID());
@@ -135,101 +138,93 @@ public class Casa {
         JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
     }
 
-    public void getCasaComprasENatureza() {
+    public void getCasaComprasENatureza() throws IOException {
         this.conta.debitar(200);
-        this.valorSorteGrande = this.valorSorteGrande + 200;
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-        //Enviar mensagem para os outros jogadores atualizar o seus valorSorteGrande's...
-        //ver como o essa classe pode conhecer clienteP2P
+        ControllerComunicacao.getInstance().creditarSorteGrande(200);
     }
 
-    public void getCasaSorteGrande() {
-        this.conta.creditar(valorSorteGrande);
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu R$ " + 
-                String.format("%2f", this.valorSorteGrande) + " por tirar a sorte grande!");
+    public void getCasaBolaoDeEsportes() throws IOException {
+        System.out.println("Bolão de esportes");
+        ControllerComunicacao.getInstance().bolaoDeEsportes(pessoa.getId());
     }
 
-    public void getCasaPosicao05() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+ 
+
+    public void getCasaConcursoDeBandaDeRock() throws IOException {
+        ControllerComunicacao.getInstance().concursoDeBandaDeRock(pessoa.getId());
     }
 
-    public void getCasaPosicao06() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+ 
+
+    public void getCasaFelizAniversario() throws IOException {
+       // tela.setStatusLabel("Feliz Aniversario");
+        System.out.println("Feliz Aniversario");
+        ControllerComunicacao.getInstance().felizAniversario(pessoa.getId());
     }
 
-    public void getCasaPosicao07() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaPremio() {
+         JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+         this.pessoa.getConta().creditar(5000.0);
     }
 
-    public void getCasaPosicao08() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaCompraEntreterimento() {
+        
     }
 
-    public void getCasaPosicao09() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaPraiaNoDomingo() throws IOException {
+       if(this.pessoa.getConta().getSaldo() < 500){
+           tela.emprestimo(500);
+       }
+       ControllerComunicacao.getInstance().creditarSorteGrande(500);
     }
 
-    public void getCasaPosicao010() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaAchouUmComprador() {
+       
     }
 
-    public void getCasaPosicao11() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaAjudeAFloresta() throws IOException {
+        if(this.pessoa.getConta().getSaldo() < 700){
+           tela.emprestimo(700);
+       }
+       ControllerComunicacao.getInstance().creditarSorteGrande(700);
     }
 
-    public void getCasaPosicao13() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaLanchonete() throws IOException {
+       while(this.pessoa.getConta().getSaldo() < 800){
+           tela.emprestimo(500);
+       }
+       ControllerComunicacao.getInstance().creditarSorteGrande(800);
     }
 
-    public void getCasaPosicao14() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaNegocioDeOcasiao() {
+       
     }
 
-    public void getCasaPosicao15() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaComprasNoShopping() throws IOException {
+       while(this.pessoa.getConta().getSaldo() < 1000){
+           tela.emprestimo(1000);
+       }
+       ControllerComunicacao.getInstance().creditarSorteGrande(1000);
     }
 
-    public void getCasaPosicao18() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaMaratonaBeneficiente() throws IOException {
+        ControllerComunicacao.getInstance().maratonaBeneficiente(this.pessoa.getId());
     }
 
-    public void getCasaPosicao19() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
+    public void getCasaDiaDaMesada() {
+       this.pessoa.getConta().creditar(5000);
+       if (conta.juros() > conta.getSaldo()){
+           tela.emprestimo(1000);
+       }
+       conta.cobrarJuros();
+     
+       double valor = tela.pagarDividas();
+       if (valor > conta.getSaldo()){
+           tela.setStatusLabel("O Seu saldo Não é Suficiente Para Quitar a Divida");
+       }
+       else{
+           conta.pagarDivida(valor);
+       }
     }
-
-    public void getCasaPosicao20() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao21() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao22() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao23() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao24() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao25() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao26() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao29() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
-
-    public void getCasaPosicao30() {
-        JOptionPane.showMessageDialog(null, "Parabéns: Você recebeu um prêmio de R$ 5.000,00!");
-    }
+    
 }

@@ -18,7 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.uefs.ecomp.jogodamesada.cliente.conexao.ProtocoloCliente;
 import br.uefs.ecomp.jogodamesada.servidor.protocolos.ProtocoloServidor;
-
+import java.net.InetAddress;
+import java.util.Collections;
 
 /**
  *
@@ -30,7 +31,6 @@ public class ServerRecebedor implements Runnable {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private List<Usuario> usuarios;
-    private List<Sala> salasEspera;
     private List<Sala> salas;
     private Usuario usuario;
     private DistribuicaoDePlayers distribuidor;
@@ -39,12 +39,12 @@ public class ServerRecebedor implements Runnable {
      * Construtor do ServerRecebedor
      *
      * @param clientSocket
+     * @param distribuidor
      */
     public ServerRecebedor(Socket clientSocket, DistribuicaoDePlayers distribuidor) throws IOException {
         this.clientSocket = clientSocket;
         this.usuarios = new ArrayList<>();
         this.salas = new ArrayList<>();
-        this.salasEspera = new ArrayList<>();
         this.distribuidor = distribuidor;
         try {
             input = new ObjectInputStream(clientSocket.getInputStream());
@@ -82,7 +82,7 @@ public class ServerRecebedor implements Runnable {
 
     @Override
     public void run() {
-        carregarUsuarios();
+        carregarArquivos("Usuarios.txt", "Salas.txt");
         while (true) {
             try {
                 String texto = (String) receberMensagem();
@@ -99,7 +99,14 @@ public class ServerRecebedor implements Runnable {
                     case ProtocoloCliente.CONECTAR_SALA:
                         this.distribuidor.addPlayer(Integer.parseInt(pacote[1]), Integer.parseInt(pacote[2]), usuario);
                         System.out.println("Jogador esperando na fila.");
-                        this.distribuidor.testarCapacidadeSalas();
+                        Sala sala = this.distribuidor.testarCapacidadeSalas();
+                        if (sala != null) {
+                            salas.add(sala);
+                            salvarSalas();
+                        }
+                        break;
+                    case ProtocoloCliente.SOLICITAR_RANK:
+                        this.processarRank(Integer.parseInt(pacote[1]), Integer.parseInt(pacote[1]), Double.parseDouble(pacote[3]));
                         break;
                 }
             } catch (IOException ex) {
@@ -116,11 +123,16 @@ public class ServerRecebedor implements Runnable {
         }
     }
 
-    private void carregarUsuarios() {
+    public void carregarArquivos(String diretorioA, String diretorioB) {
+
         try {
-            FileInputStream arquivoLeitura = new FileInputStream("Usuarios.txt");
+            FileInputStream arquivoLeitura = new FileInputStream(diretorioA);
             ObjectInputStream objLeitura = new ObjectInputStream(arquivoLeitura);
             usuarios = (List<Usuario>) objLeitura.readObject();
+            arquivoLeitura = new FileInputStream(diretorioB);
+            objLeitura = new ObjectInputStream(arquivoLeitura);
+            salas = (List<Sala>) objLeitura.readObject();
+            Sala.setNumeroSalas(salas.size());
 
             arquivoLeitura.close();
             objLeitura.close();
@@ -153,9 +165,27 @@ public class ServerRecebedor implements Runnable {
         }
     }
 
+    private void salvarSalas() {
+        try {
+            FileOutputStream fs = new FileOutputStream("Salas.txt");
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            os.writeObject(salas);
+
+            fs.flush();
+            fs.close();
+            os.flush();
+            os.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Não tem arquivo de backup.");
+        } catch (IOException ex) {
+            System.out.println("Erro na comunicação.aki");
+
+        }
+    }
+
     private void cadastrarUsuario(String nome, String senha) {
         if (!buscarUsu(nome, senha)) {
-            Usuario u = new Usuario(nome, senha, this.output);
+            Usuario u = new Usuario(nome, senha, this.output, this.clientSocket.getInetAddress());
             usuarios.add(u);
             enviarMensagem(ProtocoloServidor.USUARIO_CADASTRADO);
         } else {
@@ -189,5 +219,24 @@ public class ServerRecebedor implements Runnable {
         } else {
             enviarMensagem(ProtocoloServidor.ERRO_LOGIN);
         }
+    }
+
+    private synchronized void processarRank(int id, int numSala, double saldo) throws IOException {
+        for (Sala sala : salas) {
+            if (sala.getIdSala() == numSala) {
+                Usuario u = sala.getUsuariosSala().get(id - 1);
+                u.setSaldoFinal(saldo);
+                sala.setSolicitacoes(sala.getSolicitacoes() + 1);
+            }
+            if (sala.getSolicitacoes() == sala.getTotalPlayers()) {
+                List<Usuario> players = sala.getUsuariosSala();
+                Collections.sort(players);
+
+                for (Usuario player : players) {
+                    player.getOutput().writeObject(players);
+                }
+            }
+        }
+
     }
 }

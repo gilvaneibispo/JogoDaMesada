@@ -39,16 +39,18 @@ public class DistribuicaoDePlayers {
         salas.add(s);
     }
 
-    public void testarCapacidadeSalas() throws UnknownHostException, SocketException, IOException {
+    public Sala testarCapacidadeSalas() throws UnknownHostException, SocketException, IOException {
         for (int i = 0; i < salas.size(); i++) {
             System.out.println(salas.size());
             Sala sala = salas.get(i);
             if (sala.getTotalPlayers() == sala.getParcialPlayers()) {
                 Sala s = salas.remove(i);
-                this.gameInicio.startGame(s.getUsuariosSala(), sala.getTotalPlayers());
+                this.gameInicio.startGame(s.getUsuariosSala(), sala.getTotalPlayers(), s);
+                return s;
             }
 
         }
+        return null;
     }
 
 }

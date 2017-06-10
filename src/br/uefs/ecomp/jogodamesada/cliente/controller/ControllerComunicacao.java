@@ -81,7 +81,7 @@ public class ControllerComunicacao {
         return getCliente().logar(nome, senha);
     }
 
-    public boolean conectarSala(String players, String periodo) throws IOException {
+    public boolean conectarSala(String players, String periodo) throws IOException, ClassNotFoundException {
         return getCliente().conectarSala(players, periodo);
     }
 
@@ -92,8 +92,37 @@ public class ControllerComunicacao {
     public void perdeuSuaVez() throws IOException {
         cliente.perdeuSuaVez();
     }
-    public void felizAniversario(int id) throws IOException{
+    public void felizAniversario(String id) throws IOException{
         cliente.felizAniversario(id);
     }
+       public void sairDaPartida(String id) throws IOException {
+        cliente.sairDaPartida(id);
+    }
+        public void concursoDeBandaDeRock(String id) throws IOException{
+        cliente.concursoDeBandaDeRock(id);
+    }
+    public void maratonaBeneficiente(String id) throws IOException{
+        cliente.maratonaBeneficiente(id);
+    }
+    
+    public void bolaoDeEsportes(String id) throws IOException{
+        cliente.bolaoDeEsportes(id);
+    }
+       public void creditarSorteGrande(int valor) throws IOException{
+        cliente.creditarSorteGrande(valor);
+    }
+      
+
+    public void resgatarSorteGrande(String id) throws IOException {
+        cliente.resgatarSorteGrande(id);
+    }
+
+    public void proximoAJogar() throws IOException {
+       cliente.proximoAJogar();
+    }
+    public List solicitarRank(String id,double saldo) throws IOException, ClassNotFoundException{
+        return cliente.solicitarRank(id, saldo);
+    }
+    
 
 }

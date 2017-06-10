@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<casas>
+    <casa>
+        <ID>1</ID>
+        <nome>Dia de Compra</nome>
+        <descricao>Todos devem pagar C$ 100,00</descricao>
+    </casa>
+    <casa>
+        <ID>2</ID>
+        <nome>Aniversário</nome>
+        <descricao>Como presente, todos pagam C$ 300,00</descricao>
+    </casa>
+    <casa>
+        <ID>3</ID>
+        <nome>Colecionador</nome>
+        <descricao>Você deve pagar C$ 500,00</descricao>
+    </casa>
+    <casa>
+        <ID>4</ID>
+        <nome>Colecionador</nome>
+        <descricao>Você deve pagar C$ 500,00</descricao>
+    </casa>
+    <casa>
+        <ID>5</ID>
+        <nome>Arrumação</nome>
+        <descricao>Você deve pagar C$ 500,00</descricao>
+    </casa>
+</casas>
