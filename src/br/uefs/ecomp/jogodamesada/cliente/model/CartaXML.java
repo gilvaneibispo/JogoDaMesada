@@ -22,11 +22,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CartaXML {
 
     private File file;
+    private List<Carta> cartas;
 
     public CartaXML() {
         file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\cartas.xml");
-    }
-    private List<Carta> cartas;
+    }    
 
     /**
      * @return

@@ -113,18 +113,4 @@ public class Conta implements Serializable {
 
     public void emprestimo() {
     }
-
-    public void cobrarJuros() {
-        double juros  =  divida/(1/10) ;
-        this.saldo = saldo - juros;
-    }
-    
-    public double juros(){
-        return divida/(1/10);
-    }
-
-    public void pagarDivida(double valor) {
-       this.setDivida(-valor);
-       this.setSaldo(-valor);
-    }
 }

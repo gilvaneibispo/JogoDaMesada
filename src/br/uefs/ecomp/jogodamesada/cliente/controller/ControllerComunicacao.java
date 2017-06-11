@@ -81,7 +81,7 @@ public class ControllerComunicacao {
         return getCliente().logar(nome, senha);
     }
 
-    public boolean conectarSala(String players, String periodo) throws IOException, ClassNotFoundException {
+    public boolean conectarSala(String players, String periodo) throws IOException {
         return getCliente().conectarSala(players, periodo);
     }
 
@@ -116,13 +116,7 @@ public class ControllerComunicacao {
     public void resgatarSorteGrande(String id) throws IOException {
         cliente.resgatarSorteGrande(id);
     }
-
-    public void proximoAJogar() throws IOException {
-       cliente.proximoAJogar();
-    }
-    public List solicitarRank(String id,double saldo) throws IOException, ClassNotFoundException{
-        return cliente.solicitarRank(id, saldo);
-    }
+    
     
 
 }

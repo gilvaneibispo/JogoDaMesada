@@ -85,18 +85,39 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="linhaSuperior" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="tabuleiro" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="painelCartas" min="-2" max="-2" attributes="0"/>
+                                      <Component id="hostConfig" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="nome_label" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="369" max="-2" attributes="0"/>
+                                          <Component id="saldo_label" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="status_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jSeparator1" alignment="0" min="-2" pref="439" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="btn_jogar" min="-2" pref="255" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="btn_sair" min="-2" pref="167" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="statusAtual" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="PainelDado" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
+                              <Component id="linhaSuperior" alignment="0" min="-2" pref="1049" max="-2" attributes="0"/>
+                              <Component id="tabuleiro" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                                   <Component id="dia_dom" min="-2" pref="106" max="-2" attributes="0"/>
@@ -110,59 +131,36 @@
                                   <Component id="dia_qui" min="-2" pref="73" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
                                   <Component id="dia_sex" min="-2" pref="79" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                                   <Component id="dia_sab" min="-2" pref="80" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnCadastro" pref="281" max="32767" attributes="0"/>
-                              <Component id="btnConectar" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="btnCadastro" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnEmprestimo" alignment="0" pref="263" max="32767" attributes="0"/>
+                                      <Component id="Extra" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnConectar" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane2" min="-2" pref="263" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="painelCartas" min="-2" max="-2" attributes="0"/>
-                              <Component id="hostConfig" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="nome_label" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="369" max="-2" attributes="0"/>
-                                  <Component id="saldo_label" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="status_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jSeparator1" alignment="0" min="-2" pref="439" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="btn_jogar" min="-2" pref="255" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btn_sair" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="statusAtual" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="10" max="32767" attributes="0"/>
-                                  <Component id="PainelDado" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnEmprestimo" pref="281" max="32767" attributes="0"/>
-                              <Component id="Extra" max="32767" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                          <Component id="btn_teste" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="333" max="-2" attributes="0"/>
+                          <Component id="icone" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="nome_jogo" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="312" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
-                  <Component id="btn_teste" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="333" max="-2" attributes="0"/>
-                  <Component id="icone" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="nome_jogo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="1169" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -185,34 +183,29 @@
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="390" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="statusAtual" min="-2" max="-2" attributes="0"/>
-                                      <Component id="PainelDado" min="-2" pref="89" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace pref="117" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="btn_jogar" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                                      <Component id="btn_sair" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jScrollPane2" max="32767" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnConectar" min="-2" pref="57" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnCadastro" min="-2" pref="57" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnEmprestimo" min="-2" pref="58" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="Extra" min="-2" pref="57" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="390" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="PainelDado" min="-2" pref="89" max="-2" attributes="0"/>
+                              <Component id="statusAtual" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="490" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btn_jogar" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="btn_sair" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane2" min="-2" pref="229" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <Component id="btnConectar" min="-2" pref="57" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnCadastro" min="-2" pref="57" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnEmprestimo" min="-2" pref="58" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="Extra" min="-2" pref="57" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Component id="linhaSuperior" min="-2" pref="10" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -241,9 +234,9 @@
                           <Component id="status_label" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Component id="hostConfig" min="-2" pref="15" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace min="490" pref="519" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -376,7 +369,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="fundoTabuleiro" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -585,7 +578,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="descricao_casa_label" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="40" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

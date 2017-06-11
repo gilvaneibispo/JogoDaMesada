@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 public class Carta {
 
     @XmlElement(name = "ID")
-    private static int ID;//identificador;
+    private int ID;//identificador;
 
     @XmlElement(name = "nome")
     private final String nome;
@@ -20,13 +20,15 @@ public class Carta {
     @XmlElement(name = "tipo")
     private final int tipo; // 1 - Correios; 2 - Compra e entretenimento.
 
-    public Carta(String nome, String descricao, int tipo) {        
+    public Carta(String nome, String descricao, int tipo) {
+        this.ID = 0;
         this.nome = nome;
         this.descricao = descricao;
         this.tipo = tipo;
     }
 
     public Carta() {
+        this.ID = 0;
         this.nome = null;
         this.descricao = null;
         this.tipo = 1;
@@ -147,6 +149,6 @@ public class Carta {
     }
 
     void getAcaoCarta(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

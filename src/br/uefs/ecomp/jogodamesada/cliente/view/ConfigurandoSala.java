@@ -177,8 +177,6 @@ public class ConfigurandoSala extends JFrame {
             }
         } catch (IOException ex) {
             Logger.getLogger(ConfigurandoSala.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ConfigurandoSala.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
