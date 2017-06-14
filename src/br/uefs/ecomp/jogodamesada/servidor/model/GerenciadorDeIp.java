@@ -9,8 +9,14 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
+ * <strong>Gerenciador de IP's: </strong>
+ * Com responsabilidade muito específica, esta classe apenas estabelece o IP que
+ * cada cliente deve usar para comunicação multicast UDP como TCP. Retorna essa
+ * informação ao cliente por meio da classe EnviarDados.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
 public class GerenciadorDeIp {
 

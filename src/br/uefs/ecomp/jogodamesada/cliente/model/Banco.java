@@ -10,7 +10,7 @@ package br.uefs.ecomp.jogodamesada.cliente.model;
  * @author Gilvanei
  */
 public class Banco {
-    private int sorteGrande;
+    private double sorteGrande;
     
     public Banco(){
         this.sorteGrande = 0;
@@ -19,14 +19,14 @@ public class Banco {
     /**
      * @return the sorteGrande
      */
-    public int getSorteGrande() {
+    public double getSorteGrande() {
         return sorteGrande;
     }
 
     /**
      * @param sorteGrande the sorteGrande to set
      */
-    public void setSorteGrande(int valor) {
+    public void setSorteGrande(double valor) {
         this.sorteGrande = sorteGrande + valor;
     }
 

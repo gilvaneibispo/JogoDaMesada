@@ -12,10 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * <strong>Sala: </strong>
+ * Responsável cruzar as novas conexões com as já existentes no servidor,
+ * visando encontra jogadores com interesse semelhantes. Esta classe analisa as
+ * configurações basicas de sala solicitadas pelo jogador e associa o mesmo a
+ * outros jogadores com as mesmas escolhas. Para que os novos jogadores tenham
+ * acesso a salas lá criadas cada estancia desse objetivo é serializado. Uma nova
+ * sala é criada sempre que não existir sala correspondente as especificações
+ * solicitadas.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
-public class Sala implements Serializable{
+public class Sala implements Serializable {
 
     /**
      * @return the idSala
@@ -31,7 +41,7 @@ public class Sala implements Serializable{
     private final static GerenciadorDeIp IP = new GerenciadorDeIp();
     private int periodo;
     private static int numeroSalas;  //atributo da classe que contem o numero total de contas cadastradas
-    private int idSala; 
+    private int idSala;
     private int solicitacoes;
 
     public Sala(Usuario u, int players, int periodo) throws UnknownHostException {
@@ -42,7 +52,7 @@ public class Sala implements Serializable{
         // multicastIP = IP.getMulticastIP();
         this.periodo = periodo;
         this.idSala = (Sala.getNumeroSalas() + 1);
-        Sala.numeroSalas=+1;
+        Sala.numeroSalas = +1;
     }
 
     /**

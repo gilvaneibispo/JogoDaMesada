@@ -1,13 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.jogodamesada.servidor.protocolos;
 
 /**
+ * <strong>Protocolo Servidor: </strong>
+ * Assim como os demais protocolos esta classe padroniza as comunicação, esta
+ * vez as solicitações do cliente ao servidor.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
 public class ProtocoloServidor {
 

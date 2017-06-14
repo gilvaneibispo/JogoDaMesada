@@ -137,4 +137,18 @@ public class Testes extends JPanel
             createAndShowGUI();
         });
     }
+    
+    /*public int[] misturaCartas(){
+        int[] array = new int[15];
+        Random random = new Random();
+        
+        int p = random.nextInt(16);
+        
+        for(){
+            //Se p ta no array;            
+            misturaCartas();
+            array[i] = p;
+        }
+        return 0;
+    }*/
 }

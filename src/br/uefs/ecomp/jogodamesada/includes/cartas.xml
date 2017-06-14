@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cartas>
+    <carta>
+        <ID>1</ID>
+        <nome>Carta Conta</nome>
+        <descricao>Chegou a hora de pagar as suas contas.</descricao>
+    </carta>
+    <carta>
+        <ID>2</ID>
+        <nome>Pague a um Vizinho</nome>
+        <descricao>Escolha um vizinho e pague R$ 300,00</descricao>
+    </carta>
+    <carta>
+        <ID>3</ID>
+        <nome>Dinheiro Extra</nome>
+        <descricao>Receba R$ 100,00 de um vizinho a sua escolha.</descricao>
+    </carta>
+    <carta>
+        <ID>4</ID>
+        <nome>Doação</nome>
+        <descricao>Você muito generoso e vai doar R$ 300,00 ao animais abandonados.</descricao>
+    </carta>
+    <carta>
+        <ID>5</ID>
+        <nome>Cobraça Monstro</nome>
+        <descricao>Como presente, todos pagam C$ 300,00</descricao>
+    </carta>
+    <carta>
+        <ID>6</ID>
+        <nome>Vá pra Frente</nome>
+        <descricao>Chato, mas você acabou de ser debitado em R$ 4.000,00</descricao>
+    </carta>  
+</cartas>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.jogodamesada.servidor.Model;
 
 import java.io.IOException;
@@ -12,8 +7,14 @@ import java.net.Socket;
 import java.util.Date;
 
 /**
+ * <strong>Servidor: </strong>
+ * Responsável apenas por receber as solicitações de conexão dos cliente e .
+ * gerar novas instâncias de ServerServidor, as quais funcionaram de forma
+ * paralela por meio de Threads.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
 public class Servidor {
 
@@ -30,7 +31,7 @@ public class Servidor {
         System.out.println("Esperando conexões...");
         long tempInicial = System.currentTimeMillis();
         System.out.println(tempInicial);
-        System.out.println("inicio da compilação.. "+new Date().getTime());
+        System.out.println("inicio da compilação.. " + new Date().getTime());
         while (true) {
             try {
                 Socket clientSock = server.accept();

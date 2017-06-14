@@ -1,6 +1,8 @@
 package br.uefs.ecomp.jogodamesada.cliente.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,7 +14,9 @@ public class Conta implements Serializable {
     private String conta;                   //Núero da conta.
     private double saldo;                   //saldo da conta.
     private final Pessoa pessoa;            //Títular da conta.
-    private double divida;                  //Dividas do titular.
+    private double divida;      
+    private List cartasContaECobrancaMonstro;
+//Dividas do titular.
 
     /**
      * <strong>Construtor Conta: </strong>
@@ -22,6 +26,7 @@ public class Conta implements Serializable {
     public Conta(Pessoa pessoa) {
         this.pessoa = pessoa;
         this.saldo = 3000.00;
+         cartasContaECobrancaMonstro = new ArrayList();
     }
 
     /**
@@ -112,5 +117,26 @@ public class Conta implements Serializable {
     }
 
     public void emprestimo() {
+    }
+
+    public void cobrarJuros() {
+        double juros  =  divida/(1/10) ;
+        this.saldo = saldo - juros;
+    }
+    
+    public double juros(){
+        return divida/(1/10);
+    }
+
+    public void pagarDivida(double valor) {
+       this.setDivida(-valor);
+       this.setSaldo(-valor);
+    }
+
+    /**
+     * @return the cartasConta
+     */
+    public List getCartasConta() {
+        return cartasContaECobrancaMonstro;
     }
 }

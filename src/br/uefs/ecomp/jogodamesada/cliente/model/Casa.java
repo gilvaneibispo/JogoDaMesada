@@ -7,9 +7,12 @@ package br.uefs.ecomp.jogodamesada.cliente.model;
 
 import br.uefs.ecomp.jogodamesada.cliente.controller.ControllerComunicacao;
 import br.uefs.ecomp.jogodamesada.cliente.view.JogoDaMesada;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -19,7 +22,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class Casa {
 
-    private ArrayList<Carta> cartasSorteadas;
+    private List<Carta> cartasSorteadas;
     private int posicaoArrayCartas;
     private ArrayList<Carta> cartas;
     private ArrayList<Casa> casas;
@@ -28,6 +31,7 @@ public class Casa {
     private double valorSorteGrande;
     private JogoDaMesada tela;
     private final Carta objCarta;
+    private Properties pro;
 
     //@XmlElement(name = "ID")
     private int ID;//identificador;
@@ -45,6 +49,7 @@ public class Casa {
 
         cartasSorteadas = new ArrayList<>();
         valorSorteGrande = 0;
+        posicaoArrayCartas = 0;
         objCarta = new Carta();
     }
 
@@ -55,6 +60,7 @@ public class Casa {
 
         cartasSorteadas = new ArrayList<>();
         valorSorteGrande = 0;
+        posicaoArrayCartas = 0;
         objCarta = new Carta();
     }
 
@@ -112,50 +118,48 @@ public class Casa {
         this.cartas = cartas;
     }
 
-    public void getAcaoCasaCorreio(int qtd, int casa) {
-        JOptionPane.showMessageDialog(tela, "Casa: "+ casa + " | Correios!!!");
-        System.out.println("Correios");
-        for (int i = 1; qtd < 0; i++) {
-            cartasSorteadas.add(cartas.get(posicaoArrayCartas));
-            tela.setBotoesCarta(i, cartasSorteadas.get(i - 1).getID());
-            posicaoArrayCartas++;
-            qtd--;
-        }
-        
-        //para debug...
-        for (int i = 1; qtd < 0; i++) {
-            System.out.println("Nome: " + cartasSorteadas.get(i).getID());
-        }
-        
-        switch (qtd) {
-            case 1:
-                tela.setBotoesCarta(1, cartasSorteadas.get(0).getID());
-                break;
-            case 2:
-                tela.setBotoesCarta(1, cartasSorteadas.get(0).getID());
-                tela.setBotoesCarta(1, cartasSorteadas.get(1).getID());
-                break;
-            case 3:
-                tela.setBotoesCarta(1, cartasSorteadas.get(0).getID());
-                tela.setBotoesCarta(1, cartasSorteadas.get(1).getID());
-                tela.setBotoesCarta(1, cartasSorteadas.get(2).getID());
-                break;
-            default:
-                break;
-            //Ver se precisa avisar aos demais membros da sala...
+    public void getAcaoCasaCorreio(int qtd, int casa) throws IOException {
+        System.out.println("TAMANHO CARTAS: " + cartas.size());
+        try {
+            for (int i = 1; i < qtd; i++) {
+                System.out.println("Posição: " + posicaoArrayCartas);
+                Carta tempCarta = cartas.get(posicaoArrayCartas);
+                System.out.println(tempCarta);
+                cartasSorteadas.add(tempCarta);
+                tela.setBotoesCarta(i, tempCarta.getID());
+                System.setProperty("user.jogodamesada.carta0" + i, Helpper.toString(tempCarta.getID()));
+                posicaoArrayCartas++;
+            }
+
+            System.out.println("1P: " + System.getProperty("user.jogodamesada.carta01")
+                    + " 2P: " + System.getProperty("user.jogodamesada.carta02")
+                    + " 3P: " + System.getProperty("user.jogodamesada.carta03"));
+        } catch (IndexOutOfBoundsException ioobe) {
+            System.err.println(ioobe.getMessage());
         }
     }
 
-    public void acaoCasaSelecionada(int num) {
-        if (num == 1) {
-            tela.setBotoesCarta(num, 0);
-        } else if (num == 2) {
-            tela.setBotoesCarta(num, 0);
-        } else if (num == 3) {
-            tela.setBotoesCarta(num, 0);
-        }
+    public void acaoCasaSelecionada(int botao) throws IOException {// throws IOException {
+        Carta temp = new Carta();
 
-        objCarta.getAcaoCarta(cartasSorteadas.get(num - 1).getID());
+        switch (botao) {
+            case 1:
+                temp.acaoCarta(Integer.parseInt(System.getProperty("user.jogodamesada.carta01")));
+                tela.setBotoesCarta(botao, 0);
+                break;
+            case 2:
+                temp.acaoCarta(Integer.parseInt(System.getProperty("user.jogodamesada.carta02")));
+                tela.setBotoesCarta(botao, 0);
+                break;
+            case 3:
+                temp.acaoCarta(Integer.parseInt(System.getProperty("user.jogodamesada.carta03")));
+                tela.setBotoesCarta(botao, 0);
+                break;
+            default:
+                break;
+        }
+        //int get = botao - 1;
+        //objCarta.getAcaoCarta(cartasSorteadas.get(get).getID());
     }
 
     public void embaralharCartas() {
@@ -163,8 +167,9 @@ public class Casa {
     }
 
     private void setDadosCartaNaInterface(int idCasa) {
-        tela.setNomeCasaLabel(this.casas.get(idCasa).getNome());
-        tela.setDescricaoCasaLabel(this.casas.get(idCasa).getDescricao());
+        //System.out.println(casas.size());
+        //tela.setNomeCasaLabel(this.casas.get(idCasa).getNome());
+        //tela.setDescricaoCasaLabel(this.casas.get(idCasa).getDescricao());
     }
 
     /*
@@ -234,17 +239,17 @@ public class Casa {
     public void getCasaAjudeAFloresta(int casa) throws IOException {
         this.setDadosCartaNaInterface(casa);
         if (this.pessoa.getConta().getSaldo() < 700) {
-            tela.emprestimo(500);
+            tela.emprestimo(1000);
         }
-        ControllerComunicacao.getInstance().creditarSorteGrande(700);
+        ControllerComunicacao.getInstance().creditarSorteGrande(700.0);
     }
 
     public void getCasaLanchonete(int casa) throws IOException {
         this.setDadosCartaNaInterface(casa);
         while (this.pessoa.getConta().getSaldo() < 800) {
-            tela.emprestimo(500);
+            tela.emprestimo(1000);
         }
-        ControllerComunicacao.getInstance().creditarSorteGrande(800);
+        ControllerComunicacao.getInstance().creditarSorteGrande(800.0);
     }
 
     public void getCasaNegocioDeOcasiao(int casa) {
@@ -254,9 +259,9 @@ public class Casa {
     public void getCasaComprasNoShopping(int casa) throws IOException {
         this.setDadosCartaNaInterface(casa);
         while (this.pessoa.getConta().getSaldo() < 1000) {
-            tela.emprestimo(500);
+            tela.emprestimo(1000);
         }
-        ControllerComunicacao.getInstance().creditarSorteGrande(1000);
+        ControllerComunicacao.getInstance().creditarSorteGrande(1000.0);
     }
 
     public void getCasaMaratonaBeneficiente(int casa) throws IOException {
@@ -265,6 +270,26 @@ public class Casa {
     }
 
     public void getCasaDiaDaMesada(int casa) {
-        this.setDadosCartaNaInterface(casa);
+        // this.setDadosCartaNaInterface(casa);
+        this.pessoa.getConta().creditar(5000);
+        if (conta.juros() > conta.getSaldo()) {
+            tela.emprestimo(1000);
+        }
+        conta.cobrarJuros();
+
+        double valor = tela.pagarDividas();
+        if (valor > conta.getSaldo()) {
+            tela.setStatusLabel("O Seu saldo Não é Suficiente Para Quitar a Divida");
+        } else {
+            conta.pagarDivida(valor);
+        }
     }
+
+    /**
+     * @return the pro
+     */
+    public Properties getPro() {
+        return pro;
+    }
+
 }

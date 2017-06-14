@@ -25,7 +25,7 @@ public class CartaXML {
     private List<Carta> cartas;
 
     public CartaXML() {
-        file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\cartas.xml");
+        file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\includes\\cartas.xml");
     }    
 
     /**

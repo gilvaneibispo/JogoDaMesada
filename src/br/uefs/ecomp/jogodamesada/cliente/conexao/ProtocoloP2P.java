@@ -23,5 +23,10 @@ public class ProtocoloP2P {
     public static final int CREDITAR_SORTE_GRANDE = 11;
     public static final int RESGATAR_SORTE_GRANDE= 12;
     public static final int RESPONDER_NUMERO_BOLAO_DE_ESPORTES = 13;
+    public static final int PROXIMO_A_JOGAR = 14;
+    public static final int  CREDITAR_MARATONA_BENEFICIENTE = 15;
+    public static final int INFORMAR_GANHADOR_BOLAO_ESPORTES = 16;
+    public static final int PAGUE_A_UM_VIZINHO = 17;
+    public static final int DINHEIRO_EXTRA = 18;
     public static final String SEPARATOR = "-";
 }

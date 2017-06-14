@@ -22,8 +22,13 @@ import java.net.InetAddress;
 import java.util.Collections;
 
 /**
+ * <strong>Recebedor Server: </strong>
+ * Responsável pelo recebimento das atividades do servidor mantendo uma conexão
+ * TCP com o cliente. Como funciona de forma independe, implementa uma Thread.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
 public class ServerRecebedor implements Runnable {
 

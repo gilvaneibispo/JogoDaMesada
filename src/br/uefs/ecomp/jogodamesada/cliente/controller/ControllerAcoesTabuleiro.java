@@ -12,25 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * <strong>Controller Tabuleiro: </strong>
+ * Responsável por fazer o gerenciamento de todas as ações do tabuleiro.
+ * Implementa principalmente a comunicação entre a interface e as classes de
+ * conexão e models.
  *
- * @author Gilvanei
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
-public class ControllerTabuleiro {
+public class ControllerAcoesTabuleiro {
 
-    private ArrayList<Pessoa> jogadores;    //Todos os jogadores da sala.
-    private final Carta CeE;                      //Compra e entretenimento.
-    private Pessoa jogadorLocal;            //Jogador local da aplicação.
-    private ClienteP2P clienteP2P;          //Referência para o objeto ClienteP2P
-    private ArrayList casas;
-    private ArrayList cartas;
-    private JogoDaMesada mesa;              //
-    private final Casa casaDaPosicao;             //Referencia ao objeto Casa para recuperar 
+    private List<Pessoa> jogadores;     //Todos os jogadores da sala.
+    private final Carta CeE;            //Compra e entretenimento.
+    private Pessoa jogadorLocal;        //Jogador local da aplicação.
+    private ClienteP2P clienteP2P;      //Referência para o objeto ClienteP2P
+    private List casas;                 //
+    private List cartas;                // 
+    private JogoDaMesada mesa;          //
+    private final Casa casaDaPosicao;   //Referencia ao objeto Casa para recuperar 
     //as ações nas posições do tabuleiro.
 
-    public ControllerTabuleiro() {
+    public ControllerAcoesTabuleiro() {
         CeE = null;
         this.jogadorLocal = new Pessoa();
         this.casaDaPosicao = new Casa();
+        casas = new ArrayList();
+        cartas = new ArrayList();
         this.recuperarCartas();
         this.recuperarCasas();
         this.embaralharCartas();
@@ -51,7 +59,7 @@ public class ControllerTabuleiro {
     }
 
     public ArrayList getJogadores() {
-        return this.jogadores;
+        return (ArrayList) this.jogadores;
     }
 
     public void setClienteP2P(ClienteP2P clienteP2P) {
@@ -67,9 +75,9 @@ public class ControllerTabuleiro {
     private void recuperarCasas() {
 
         CasaXML casa = new CasaXML();
-        ArrayList<Casa> tempCasas = (ArrayList<Casa>) casa.LendoXML();
-        this.casas = tempCasas;
-        this.casaDaPosicao.setCasas(tempCasas);
+        this.casas = (ArrayList<Casa>) casa.LendoXML();
+        this.casaDaPosicao.setCasas((ArrayList) casas);
+        //System.out.println("CONSTRUTOR" + casas.size());
     }
 
     /**
@@ -86,6 +94,10 @@ public class ControllerTabuleiro {
         this.casaDaPosicao.setCartas(tempCartas);
     }
 
+    public void acaoCasaSelecionada(int botao) throws IOException {
+        casaDaPosicao.acaoCasaSelecionada(botao);
+    }
+
     public void getAcaoSorteGrande() throws IOException {
         casaDaPosicao.getCasaSorteGrande(jogadorLocal);
     }
@@ -100,7 +112,7 @@ public class ControllerTabuleiro {
                 casaDaPosicao.getCasaPremio(casa);
                 break;
             case 3:// | 16:
-                casaDaPosicao.getAcaoCasaCorreio(3, casa);
+                // casaDaPosicao.getAcaoCasaCorreio(3, casa);
                 break;
             case 4:
                 casaDaPosicao.getCasaCompraEntreterimento(casa);
@@ -136,6 +148,8 @@ public class ControllerTabuleiro {
                 casaDaPosicao.getCasaAchouUmComprador(casa);
                 break;
             case 10:
+                System.out.println("CARTAS" + cartas.size());
+                //System.out.println("CLASSE CONTROLLER" + casas.size());
                 casaDaPosicao.getCasaFelizAniversario(casa);
                 break;
             case 12:
@@ -164,7 +178,10 @@ public class ControllerTabuleiro {
                 break;
              */
             case 30:
-                casaDaPosicao.getCasaDiaDaMesada(casa);
+                casaDaPosicao.getCasaMaratonaBeneficiente(casa);
+                break;
+            case 31:
+                //casaDaPosicao.getCasaDiaDaMesada(casa);
                 break;
         }
     }
@@ -176,6 +193,51 @@ public class ControllerTabuleiro {
     }
 
     public void setJogadores(List<Pessoa> temp) {
-        this.jogadores = (ArrayList<Pessoa>) temp;
+        this.jogadores = (List<Pessoa>) temp;
+    }
+
+    public void acaoCartaSelecionada(int botao) throws IOException {
+        switch (botao) {
+            case 1:
+                this.acaoCarta(Integer.parseInt(casaDaPosicao.getPro().getProperty("prop.server.carta01")));
+                mesa.setBotoesCarta(botao, 0);
+                break;
+            case 2:
+                this.acaoCarta(Integer.parseInt(casaDaPosicao.getPro().getProperty("prop.server.carta02")));
+                mesa.setBotoesCarta(botao, 0);
+                break;
+            case 3:
+                this.acaoCarta(Integer.parseInt(casaDaPosicao.getPro().getProperty("prop.server.carta03")));
+                mesa.setBotoesCarta(botao, 0);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void acaoCarta(int carta) throws IOException {
+        switch (carta) {
+            case 1:
+                clienteP2P.contas(1200.0);
+                break;
+            case 2:
+                String id = mesa.escolhaUmVizinho();
+                ControllerComunicacao.getInstance().pagueAUmvizinhoAgora(id);
+                break;
+            case 3:
+                String idd = mesa.escolhaUmVizinho();
+                ControllerComunicacao.getInstance().dinheiroExtra(idd);
+                break;
+            case 4:
+                ControllerComunicacao.getInstance().doacoes(1000.0);
+                break;
+            case 5:
+                clienteP2P.CobrancaMonstro(1500.0);
+                break;
+            case 6:
+
+                break;
+
+        }
     }
 }

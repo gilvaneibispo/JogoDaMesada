@@ -26,7 +26,7 @@ public class CasaXML {
 
     public CasaXML() {
         //file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\casas.xml");
-          file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\casas.xml");
+          file = new File("src\\br\\uefs\\ecomp\\jogodamesada\\includes\\casas.xml");
     }
     
     /**

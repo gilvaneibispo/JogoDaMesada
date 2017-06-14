@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<casas>
+    <casa>
+        <ID>1</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>2</ID>
+        <nome>Prêmio</nome>
+        <descricao>Parabéns: Você ganhou R$ 5000,00!</descricao>
+    </casa>
+    <casa>
+        <ID>3</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 02 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>4</ID>
+        <nome>Compra e Entretenimentos</nome>
+        <descricao>Você vendê-la mais tarde!</descricao>
+    </casa>
+    <casa>
+        <ID>5</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 03 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>6</ID>
+        <nome>Bolão</nome>
+        <descricao>Escolha um dos números do dado e fique na torcida do sorteio!</descricao>
+    </casa>
+    <casa>
+        <ID>7</ID>
+        <nome>Praia no Domingo</nome>
+        <descricao>Você é previnido e investiu R$ 500,00 no Sorte Grande</descricao>
+    </casa>
+    <casa>
+        <ID>8</ID>
+        <nome>Concurso de Banda de Arrocha</nome>
+        <descricao>!</descricao>
+    </casa>
+    <casa>
+        <ID>9</ID>
+        <nome>Achou um Comprador</nome>
+        <descricao>A sorte está contigo, você achou um\n comprador para sua carta COMPRA!</descricao>
+    </casa>
+    <casa>
+        <ID>10</ID>
+        <nome>Feliz Aniversário</nome>
+        <descricao>Como presente, todos lhe pagarão R$ 300,00</descricao>
+    </casa>
+     <casa>
+        <ID>11</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>12</ID>
+        <nome>Compra e Entretenimentos</nome>
+        <descricao>Você vendê-la mais tarde!</descricao>
+    </casa>
+    <casa>
+        <ID>13</ID>
+        <nome>Bolão</nome>
+        <descricao>Escolha um dos números do dado e fique na torcida do sorteio!</descricao>
+    </casa>
+    <casa>
+        <ID>14</ID>
+        <nome>Ajude a floresta</nome>
+        <descricao>Você é realmente generoso e doou R$ 400,00 para salvar a floresta!</descricao>
+    </casa>
+    <casa>
+        <ID>15</ID>
+        <nome>Compra e Entretenimentos</nome>
+        <descricao>Você vendê-la mais tarde!</descricao>
+    </casa>
+    <casa>
+        <ID>16</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>17</ID>
+        <nome>Achou um Comprador</nome>
+        <descricao>A sorte está contigo, você achou um\n comprador para sua carta COMPRA!</descricao>
+    </casa>
+    <casa>
+        <ID>18</ID>
+        <nome>Lanchonete</nome>
+        <descricao>Você gastou R$ 200,00 com lanche!</descricao>
+    </casa>
+    <casa>
+        <ID>19</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>20</ID>
+        <nome>Bolão</nome>
+        <descricao>Escolha um dos números do dado e fique na torcida do sorteio!</descricao>
+    </casa>
+    <casa>
+        <ID>21</ID>
+        <nome>Negócio de ocasião</nome>
+        <descricao>Você investiu (seu valor sorteado x 100) \nem uma carta Compra e Entretenimento!</descricao>
+    </casa>
+    <casa>
+        <ID>22</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+     <casa>
+        <ID>23</ID>
+        <nome>Achou um Comprador</nome>
+        <descricao>A sorte está contigo, você achou um\n comprador para sua carta COMPRA!</descricao>
+    </casa>
+    <casa>
+        <ID>24</ID>
+        <nome>Correios</nome>
+        <descricao>Você recebeu 01 carta do tipo CORREIOS!</descricao>
+    </casa>
+    <casa>
+        <ID>25</ID>
+        <nome>Compra e Entretenimentos</nome>
+        <descricao>Você vendê-la mais tarde!</descricao>
+    </casa>
+     <casa>
+        <ID>26</ID>
+        <nome>Achou um Comprador</nome>
+        <descricao>A sorte está contigo, você achou um\n comprador para sua carta COMPRA!</descricao>
+    </casa>
+    <casa>
+        <ID>27</ID>
+        <nome>Bolão</nome>
+        <descricao>Escolha um dos números do dado e fique na torcida do sorteio!</descricao>
+    </casa>
+    <casa>
+        <ID>28</ID>
+        <nome>Compra e Entretenimentos</nome>
+        <descricao>Você vendê-la mais tarde!</descricao>
+    </casa>
+     <casa>
+        <ID>29</ID>
+        <nome>Achou um Comprador</nome>
+        <descricao>A sorte está contigo, você achou um\n comprador para sua carta COMPRA!</descricao>
+    </casa>
+    <casa>
+        <ID>30</ID>
+        <nome>Maratona Beneficiente</nome>
+        <descricao></descricao>
+    </casa>
+    <casa>
+        <ID>31</ID>
+        <nome>Dia da Mesada</nome>
+        <descricao>Acerte todas as suas contas hoje!</descricao>
+    </casa>
+</casas>

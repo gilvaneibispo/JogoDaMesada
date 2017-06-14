@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.jogodamesada.servidor.Model;
 
 import java.io.ObjectOutputStream;
@@ -10,8 +5,15 @@ import java.io.Serializable;
 import java.net.InetAddress;
 
 /**
+ * <strong>Usuário: </strong>
+ * Simboliza a abstração de um usuário padrão. Sendo responsável por guardar
+ * dados pessoais como nome e senha. Esta classe é conhecida apenas pelo
+ * servidor, sendo sua equivalência no cliente a classe Pessoa. Todas as instâncias
+ * desse objeto é serializado, garantindo que o jogador se cadastre apenas uma vez.
  *
- * @author User
+ * @author Gilvanei Bispo
+ * @author Rodrigo Santos
+ * @author Dermeval Neves
  */
 public class Usuario implements Serializable, Comparable<Usuario> {
 
@@ -20,7 +22,6 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     private transient ObjectOutputStream output;
     private InetAddress endereco;
     private double saldoFinal;
-
 
     public Usuario(String nome, String senha, ObjectOutputStream output, InetAddress endereco) {
         this.nome = nome;
@@ -80,7 +81,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
     @Override
     public int compareTo(Usuario o) {
-            if (this.saldoFinal < o.saldoFinal) {
+        if (this.saldoFinal < o.saldoFinal) {
             return -1;
         }
         if (this.saldoFinal > o.saldoFinal) {
@@ -88,5 +89,4 @@ public class Usuario implements Serializable, Comparable<Usuario> {
         }
         return 0;
     }
-    
 }

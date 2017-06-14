@@ -23,7 +23,6 @@ public class ClienteP2P {
 
     private InetAddress address;
     private LinkedList<Pessoa> ordemJogadas;
-    private static ClienteP2P instance;
     private JogoDaMesada tabuleiro;
     private Pessoa jogadorAtual;
     private Pessoa sorteioAtual;
@@ -33,8 +32,10 @@ public class ClienteP2P {
     private Cliente cliente;
     private Hashtable tabelaBolao;
     private Banco banco;
-    private LinkedList numeroSorteio;
     private boolean numeroValido;
+    private int idSala;
+    private int duracao;
+    private int pessoasRestantes;
 
     public ClienteP2P(InetAddress address, Cliente cliente) throws IOException {
         this.address = address;
@@ -60,13 +61,12 @@ public class ClienteP2P {
                 break;
             case ProtocoloP2P.MOVER_PEAO:
                 tabuleiro.calculaDistancia(tokens.nextToken(), Integer.parseInt(tokens.nextToken()));
-                this.mudarJogadorAtual();
                 break;
             case ProtocoloP2P.PERDEU_A_VEZ:
                 this.mudarJogadorAtual();
                 break;
             case ProtocoloP2P.FELIZ_ANIVERSARIO:
-                this.felizAniversario(Integer.parseInt(tokens.nextToken()));
+                this.felizAniversario(tokens.nextToken());
                 break;
             case ProtocoloP2P.SAIR_DA_PARTIDA:
                 this.excluirJogador(tokens.nextToken());
@@ -79,10 +79,10 @@ public class ClienteP2P {
                 this.setJogadasRegulares(true);
                 break;
             case ProtocoloP2P.PROXIMO_A_TENTAR:
-                this.iniciarConcursoDeBandaDeRock(tokens.nextToken());
+                this.iniciarConcursoDeBandaDeRock(pegarProximo());
                 break;
             case ProtocoloP2P.SOLICITAR_NUMERO_BOLAO_DE_ESPORTES:
-                this.setJogadasRegulares(false);
+                //this.setJogadasRegulares(false);
                 this.enviarNumerobolaoDeEsportes(tokens.nextToken());
                 break;
             case ProtocoloP2P.CREDITAR_SORTE_GRANDE:
@@ -92,12 +92,34 @@ public class ClienteP2P {
                 this.resgatarSorteGrande(tokens.nextToken());
                 break;
             case ProtocoloP2P.RESPONDER_NUMERO_BOLAO_DE_ESPORTES:
-                this.respostaBolao(tokens.nextToken());
+                this.respostaBolao(Integer.parseInt(tokens.nextToken()), tokens.nextToken());
                 break;
+            case ProtocoloP2P.PROXIMO_A_JOGAR:
+                this.mudarJogadorAtual();
+                break;
+            case ProtocoloP2P.MARATONA_BENEFICIENTE:
+                this.maratonaBeneficiente(tokens.nextToken());
+                break;
+            case ProtocoloP2P.CREDITAR_MARATONA_BENEFICIENTE:
+                this.creditarMaratonaBeneficiente(Double.parseDouble(tokens.nextToken()));
+                break;
+            case ProtocoloP2P.INFORMAR_GANHADOR_BOLAO_ESPORTES:
+                this.creditarGanhadorbolaoesporte(tokens.nextToken(), Double.parseDouble(tokens.nextToken()));
+                break;
+            case ProtocoloP2P.PAGUE_A_UM_VIZINHO:
+                this.pagarVizinho(tokens.nextToken());
+                break;
+            case ProtocoloP2P.DINHEIRO_EXTRA:
+                this.dinheiroExtra(tokens.nextToken());
+                break;
+
         }
     }
 
-    private void criaInstanciaPessoa(StringTokenizer tokens) {
+    public void criaInstanciaPessoa(StringTokenizer tokens) {
+        idSala = Integer.parseInt(tokens.nextToken());
+        duracao = Integer.parseInt(tokens.nextToken());
+        System.out.println("Id da Sala: " + getIdSala());
         while (tokens.hasMoreElements()) {
             String nomeJogador = tokens.nextToken();
             String id = "J" + tokens.nextToken();
@@ -106,6 +128,7 @@ public class ClienteP2P {
             setJogadorAtual(ordemJogadas.get(0));
             this.setJogadasRegulares(true);
         }
+        pessoasRestantes = ordemJogadas.size();
     }
 
     /**
@@ -143,23 +166,26 @@ public class ClienteP2P {
         return jogadorAtual;
     }
 
-    public boolean eMeuTurno(String nome) {
-        if (nome.equals(this.jogadorAtual.getNome()) && isJogadaRegular()) {
+    public boolean eMeuTurno(Pessoa p) {
+        if (p.getNome().equals(this.jogadorAtual.getNome()) && isJogadaRegular() && !p.isFim()) {
             return true;
         }
         return false;
     }
 
-    /**
-     * @param jogadorAtual the jogadorAtual to set
-     */
     public void mudarJogadorAtual() {
-        ordemJogadas.addLast(ordemJogadas.removeFirst());
-        jogadorAtual = ordemJogadas.peekFirst();
+        if (pessoasRestantes > 1) {
+            ordemJogadas.addLast(ordemJogadas.removeFirst());
+            jogadorAtual = ordemJogadas.peekFirst();
+            if (jogadorAtual.isFim()) {
+                mudarJogadorAtual();
+            }
+
+        }
     }
-    
-        public void mudarSorteioAtual() {
-       sorteios.addLast(sorteios.removeFirst());
+
+    public void mudarSorteioAtual() {
+        sorteios.addLast(sorteios.removeFirst());
         sorteioAtual = sorteios.peekFirst();
     }
 
@@ -167,17 +193,19 @@ public class ClienteP2P {
         this.jogadorAtual = get;
     }
 
-    private void felizAniversario(int id) {
+    private void felizAniversario(String id) {
         for (Pessoa p : ordemJogadas) {
             if (p.getId().equals(id)) {
-                p.getConta().creditar(ordemJogadas.size() * 100.00);
+                p.getConta().creditar((ordemJogadas.size() - 1) * 100.00);
+                tabuleiro.setStatusLabel("Parabens Hj é o seu Aniversario");
             } else {
                 if (p.getConta().getSaldo() < 100) {
                     if (this.tabuleiro.emprestimo(100.00)) {
-                        p.getConta().debitar(100.00);
                     }
                 }
                 p.getConta().debitar(100.00);
+                this.tabuleiro.getSaldo_label().setText("R$: " + this.jogadorLocal.getConta().getSaldo());
+                tabuleiro.setStatusLabel("Aniversario de " + jogadorAtual.getNome());
             }
         }
     }
@@ -189,26 +217,33 @@ public class ClienteP2P {
         for (int i = 0; i < ordemJogadas.size(); i++) {
             Pessoa p = ordemJogadas.get(i);
             if (p.getId().equals(id)) {
+                tabuleiro.setStatusLabel("O Player " + p.getNome() + " Se Desconectou da Partida!!");
                 ordemJogadas.remove(p);
             }
 
         }
-        if (ordemJogadas.size() == 1) {
+
+        if (ordemJogadas.size() == 1 && !jogadorLocal.getId().equals(id)) {
             tabuleiro.informarVencedor();
         }
     }
 
     private void iniciarConcursoDeBandaDeRock(String id) throws IOException {
-
-        if (jogadorAtual.getId().equals(id)) {
+        if (sorteioAtual == null) {
+            System.out.println("Iniciei");
             sorteios.addAll(ordemJogadas);
             sorteioAtual = sorteios.getFirst();
         }
-        if (sorteioAtual.getId().equals(id) && this.tabuleiro.ConcursoDeBandaDeRock() == 3) {
-            sorteioAtual.getConta().creditar(1000.00);
-            cliente.finalizarSorteios();
-        } else {
-            cliente.proximoATentar(pegarProximo());
+        System.err.println("Sorteio Atual" + sorteioAtual.getId());
+        if (jogadorLocal.getId().equals(id)) {
+            int dado = this.tabuleiro.ConcursoDeBandaDeRock();
+            System.out.println("Dado sorteado" + dado);
+            if (dado == 3) {
+                jogadorLocal.getConta().creditar(1000.00);
+                cliente.finalizarSorteios();
+            } else {
+                cliente.proximoATentar();
+            }
         }
     }
 
@@ -219,6 +254,7 @@ public class ClienteP2P {
     }
 
     private void setJogadasRegulares(boolean b) {
+        sorteioAtual = null;
         this.jogadaRegular = b;
     }
 
@@ -230,32 +266,27 @@ public class ClienteP2P {
     }
 
     public void bolaoDeEsportes(String id) throws IOException {
+        System.out.println("Bolao Local" + Thread.currentThread().getId());
         tabelaBolao = new Hashtable(ordemJogadas.size());
         sorteios.addAll(ordemJogadas);
         sorteioAtual = sorteios.getFirst();
-        numeroSorteio = new LinkedList();
 
         for (int i = 0; i < ordemJogadas.size(); i++) {
             this.cliente.solicitarNumeroBolaoEsportes(sorteioAtual.getId());
             while (true) {
-                if (this.isNumeroValido()){
+                if (this.isNumeroValido()) {
                     this.mudarSorteioAtual();
                     this.setNumeroValido(false);
                     break;
                 }
             }
-
         }
-        
-        /* if (jogadorAtual.getId().equals(id) && this.tabelaBolao == null) {
-            tabelaBolao = new Hashtable(ordemJogadas.size());
-            sorteios.addAll(ordemJogadas);
-            sorteioAtual = sorteios.getFirst();
+        int dado = tabuleiro.sortearGanhadorBolao();
+        while (!tabelaBolao.containsKey(dado)) {
+            dado = tabuleiro.sortearGanhadorBolao();
         }
-        if (sorteioAtual.getId().equals(id) && this.tabuleiro.participarBolaoEsportes() != 0) {
-
-        }
-         */
+        System.out.println("OBjeto Para o Valor sorteado" + tabelaBolao.get(dado));
+        cliente.informarGanhadorBolaoDeEsportes((String) tabelaBolao.get(dado), 1000.00 + (100.00 * tabelaBolao.size()));
     }
 
     private void creditarSorteGrande(int valor) {
@@ -269,7 +300,13 @@ public class ClienteP2P {
 
     private void enviarNumerobolaoDeEsportes(String id) throws IOException {
         if (jogadorLocal.getId().equals(id)) {
-            cliente.enviarRespostaBolaoEsportes(tabuleiro.participarBolaoEsportes());
+            System.out.println("Enviando Resposta" + Thread.currentThread().getId());
+            System.out.println("enviarNumerobolaoDeEsportes");
+            int resposta = tabuleiro.participarBolaoEsportes();
+            if (resposta != 0) {
+                jogadorLocal.getConta().debitar(100.00);
+                cliente.enviarRespostaBolaoEsportes(tabuleiro.participarBolaoEsportes(), jogadorLocal.getId());
+            }
         }
     }
 
@@ -280,13 +317,18 @@ public class ClienteP2P {
         this.jogadorLocal = jogadorLocal;
     }
 
-    private void respostaBolao(String num) throws IOException {
+    private void respostaBolao(int num, String id) throws IOException {
+        System.out.println("Analisando resposta" + Thread.currentThread().getId());
         if (this.jogadorLocal.getId().equals(jogadorAtual.getId())) {
-            if (!tabelaBolao.contains(num) || num.equals("0")) {
-                tabelaBolao.put(num, sorteioAtual.getId());
+            if (!tabelaBolao.containsKey(num) || num == 0) {
+                System.out.println("Resposta Bolão");
+                tabelaBolao.put(num, id);
+                System.out.println(tabelaBolao.size());
                 this.setNumeroValido(true);
+            } else {
+                this.cliente.solicitarNumeroBolaoEsportes(sorteioAtual.getId());
+                System.out.println("aqui nÃO É NULL");
             }
-            this.cliente.solicitarNumeroBolaoEsportes(sorteioAtual.getId());
         }
 
     }
@@ -303,6 +345,110 @@ public class ClienteP2P {
      */
     public void setNumeroValido(boolean numeroValido) {
         this.numeroValido = numeroValido;
+    }
+
+    private void maratonaBeneficiente(String id) throws IOException {
+        if (!jogadorLocal.getId().equals(id)) {
+            double valor = (tabuleiro.maratonaBenefiente() * 100);
+            if (valor > jogadorLocal.getConta().getSaldo()) {
+                tabuleiro.emprestimo(valor);
+            }
+            jogadorLocal.getConta().debitar(valor);
+            tabuleiro.atalizarSaldo();
+            this.cliente.creditarMaratonaBeneficiente(valor);
+        }
+    }
+
+    private synchronized void creditarGanhadorSorteGrande(String id, double valor) {
+        if (this.jogadorLocal.getId().equals(id)) {
+            jogadorLocal.getConta().creditar(valor);
+            tabuleiro.atalizarSaldo();
+            System.out.println("P2P" + jogadorLocal.getConta().getSaldo());
+            System.out.println("Creditando" + valor + "Na conta" + jogadorLocal.getId());
+        }
+    }
+
+    /**
+     * @return the idSala
+     */
+    public int getIdSala() {
+        return idSala;
+    }
+
+    private void creditarGanhadorbolaoesporte(String id, double valor) {
+        if (jogadorLocal.getId().equals(id)) {
+            jogadorLocal.getConta().creditar(valor);
+            tabuleiro.atalizarSaldo();
+        }
+    }
+
+    /**
+     * @return the duracao
+     */
+    public int getDuracao() {
+        return duracao;
+    }
+
+    /**
+     * @param duracao the duracao to set
+     */
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
+
+    private synchronized void creditarMaratonaBeneficiente(double valor) {
+        banco.setSorteGrande(valor);
+        System.out.println(banco.getSorteGrande());
+    }
+
+    public void comunicarChegada(Pessoa p) {
+                p.setFim(true);
+                pessoasRestantes = pessoasRestantes - 1;
+    }
+
+    /**
+     * @return the pessoasRestantes
+     */
+    public int getPessoasRestantes() {
+        return pessoasRestantes;
+    }
+
+    /**
+     * @param pessoasRestantes the pessoasRestantes to set
+     */
+    public void setPessoasRestantes(int pessoasRestantes) {
+        this.pessoasRestantes = pessoasRestantes;
+    }
+
+    public void contas(double valor) {
+        if(tabuleiro.pagarContas()){
+            if (jogadorAtual.getConta().getSaldo() < valor){
+                tabuleiro.emprestimo(1000);
+            }
+            jogadorAtual.getConta().debitar(valor);
+        }else{
+            jogadorAtual.getConta().getCartasConta().add(valor);
+        }
+    }
+
+    private void pagarVizinho(String id) {
+       if (jogadorLocal.getId().equals(id)){
+           jogadorLocal.getConta().creditar(1500);
+       }if (jogadorAtual.getId().equals(id)){
+           jogadorAtual.getConta().debitar(1500);
+       }
+    }
+
+    private void dinheiroExtra(String id) {
+         if (jogadorLocal.getId().equals(id)){
+           jogadorLocal.getConta().debitar(1500);
+       }if (jogadorAtual.getId().equals(id)){
+           jogadorAtual.getConta().creditar(1500);
+       }
+    }
+
+    public void CobrancaMonstro(double valor) {
+        
     }
 
 }
